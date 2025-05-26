@@ -17,11 +17,12 @@ import {
       MenubarSeparator,
       MenubarTrigger,
 } from "@/components/ui/menubar"
-import { ListPlusIcon, ListX, PencilRuler, Search, ShieldMinus, ShieldPlus } from "lucide-react";
+import { ListX, PencilRuler, Search, ShieldMinus, ShieldPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { useGetAllCategoryQuery } from "@/App/Redux/features/admin/admin.api";
+import { IoMdAdd } from "react-icons/io";
 
 
 const ManageBook = () => {
@@ -115,9 +116,9 @@ const ManageBook = () => {
 
             }
       }
-      const handleProductFlashStatus = async (id: string, status: boolean) => {
+      const handleProductFlashStatus = async (id: string) => {
             const toasId = toast.loading("Updating......")
-            const payload = { productId: id, status: !status }
+            const payload = { productId: id, status: false }
             const res = await updateFlashStatus(payload)
             if (res.data) {
                   toast.success("Flash Deals status updated.", { id: toasId })
@@ -283,17 +284,14 @@ const ManageBook = () => {
                                                                                           </Link>
                                                                                     </MenubarItem>
                                                                                     <MenubarItem>
-                                                                                          <button onClick={() => handleProductFlashStatus(product._id, product?.isFlashDeals)} >
-                                                                                                {
-                                                                                                      product?.isFlashDeals ?
-                                                                                                            <span className="flex items-center gap-2"><ListX />
-                                                                                                                  Remove on Flash</span>
-                                                                                                            :
-                                                                                                            <span className="flex items-center gap-2"><ListPlusIcon />
-                                                                                                                  Add on Flash</span>
-                                                                                                }
+                                                                                          {
+                                                                                                product?.isFlashDeals ?
 
-                                                                                          </button>
+                                                                                                      <button onClick={() => handleProductFlashStatus(product._id)}>
+                                                                                                            <span className="flex items-center gap-2"><ListX /> Remove on Flash</span>
+                                                                                                      </button> :
+                                                                                                      <Link state={product?._id} className="flex items-center gap-2" to="/admin/manage-product/add-flash"><IoMdAdd /> Add On Flash</Link>
+                                                                                          }
                                                                                     </MenubarItem>
                                                                                     <MenubarItem>
                                                                                           <button onClick={() => handleProductStatus(product._id, product.isActive)} >

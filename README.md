@@ -1,4 +1,4 @@
-# Mahid Book's (Book shop Application)
+# Gulf Basket 🧺 (E-Commerce Web Application)
 
 ## Table of Contents
 
@@ -7,7 +7,6 @@
   - [User Registration & Authentication](#user-registration--authentication)
   - [Public Endpoints](#public-endpoints)
   - [Private Routes](#private-routes)
-
 - [Installation](#installation)
 - [Usage](#usage)
 - [Technologies Used](#technologies-used)
@@ -16,7 +15,7 @@
 
 ## Project Overview
 
-The **Mahid Book's Shop Application** is a user-friendly platform designed for seamless book shopping with secure authentication, role-based access, and smooth product management. It features responsive design, error handling, and `Shurjopay` payment integration .
+**Gulf Basket** is a modern, user-friendly e-commerce platform built for seamless online shopping. The app offers robust user authentication, role-based access control, dynamic product management, and smooth payment integration via **SurjoPay**. It delivers a responsive interface, intuitive navigation, and efficient admin functionalities for managing inventory and orders.
 
 ---
 
@@ -24,93 +23,139 @@ The **Mahid Book's Shop Application** is a user-friendly platform designed for s
 
 ### User Registration & Authentication
 
-- Secure registration and login with hashed passwords.
-- Role-based access (`user` by default, admin manually assigned).
-- JWT authentication for secure user sessions.
-- For registration you need to-
+- Secure user registration and login using hashed passwords.
+- JWT-based authentication for secure session management.
+- Role-based access:
+  - `user` (default)
+  - `admin` (assigned manually via backend or admin dashboard)
+- Registration requires the following fields:
 ```typescript
     name: string;
     email: string;
     password: string;
+
 ```
 
+Public Endpoints
 
-### Public Endpoints
+    Home Page:
 
-1. **Home Page:**
-  - Fully Responsive and simple , user friendly.
-   - Navbar with logo, navigation links, and authentication buttons.
-   - Featured book section with daynamic result.
-   - Footer with contact and social media links.
+        Fully responsive and modern design.
 
-2. **All Books Page:**
-   - Search books by title, author, or category.
-   - Filter options (price range, category, availability, etc.).
-   - Dynamic results with product cards.
+        Navbar with logo, navigation links, and login/register buttons.
 
+        Featured products section (dynamically loaded).
 
-3. **Book Details Page:**
-   - Displays book details with an image.
-   - Checkout Form .
+        Footer with contact info and social media links.
 
-4. **About Page:**
-   - Information about the shop and mission statement.
+    All Products Page:
 
-### Private Routes
+        Search products by name, brand, or category.
 
-1. **Checkout Page:**
-   - Users can place book orders.
-   - Order quantity cannot exceed stock.
-   - Order form with total price calculation.
-   - Integrated **SurjoPay** payment gateway.
-   - Order and payment verification systems.
+        Filter options: price range, availability, category.
 
-2. **Dashboard (Role-Based):**
-   - **Admin:** Manage users, products, and orders.
-   - **User:** View orders, manage profile settings also password change with old password verification.
+        Responsive product cards with real-time data.
 
+    Product Details Page:
 
-## Installation
+        Displays detailed product information with image, price, and description.
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/md-maruf-billa/Book-shop-frontend-router_6
-   ```
-2. Navigate into the project directory:
-   ```sh
-   cd Book-shop-frontend-router_6
-   ```
-3. Install dependencies:
-   ```sh
-   npm install
-   ```
+        Add to Cart and Buy Now options.
 
-4. Start the development server:
-   ```sh
-   npm run dev
-   ```
-   You also need to install my book shop backend for running this project. Hare backend link- `https://github.com/md-maruf-billa/Book-Shop-B4A2-server`
+        Checkout preview.
 
----
+    About Page:
 
-## Usage
+        Information about Gulf Basket, its mission, and vision.
 
-- **Register/Login** to access user-specific functionalities.
-- **Browse books** on the Home or All Products page.
-- **Filter/Search** to find desired books easily.
-- **Buy books** securely using SurjoPay payment gateway.
-- **Admin Dashboard** for managing products, orders, and users.
+Private Routes
 
----
+    Checkout Page:
 
-## Technologies Used
+        Secure checkout process for placing orders.
 
-- **Frontend:** React.js, Tailwind CSS, Shadcn UI
-- **Authentication:** JWT, bcrypt.js
-- **Payment Gateway:** SurjoPay
-- **State Management:** Redux
+        Quantity validation (can't exceed available stock).
 
----
+        Order summary with total price.
 
-### Happy Coding! 🚀
+        Integrated SurjoPay payment system.
 
+        Order confirmation & payment verification.
+
+    User Dashboard:
+
+        View past orders.
+
+        Update profile and change password (with old password verification).
+
+    Admin Dashboard:
+
+        Manage all users (promote/demote roles).
+
+        Add, update, or delete products.
+
+        View and manage all orders.
+
+        Monitor payments and system metrics.
+
+Installation
+Frontend Setup
+
+    Clone the frontend repository:
+
+git clone https://github.com/md-maruf-billa/Book-shop-frontend-router_6
+
+Navigate into the project directory:
+
+cd Book-shop-frontend-router_6
+
+Install dependencies:
+
+npm install
+
+Start the development server:
+
+    npm run dev
+
+Backend Setup (Required)
+
+You also need to install and run the backend server for full functionality.
+
+    Clone the backend repository:
+
+    git clone https://github.com/md-maruf-billa/Book-Shop-B4A2-server
+
+    Follow the setup instructions in the backend repository's README.
+
+Usage
+
+    Register/Login to unlock user functionalities.
+
+    Browse products and search/filter to find what you need.
+
+    Add items to cart or directly buy using SurjoPay.
+
+    Track orders and update your profile via the user dashboard.
+
+    Admin users can manage everything from a central dashboard.
+
+Technologies Used
+
+    Frontend: React.js, Tailwind CSS, Shadcn UI
+
+    Authentication: JWT, bcrypt.js
+
+    Payment Gateway: SurjoPay
+
+    State Management: Redux
+
+    Routing: React Router v6
+
+    Backend (linked repo): Node.js, Express.js, MongoDB
+
+Contribution
+
+Feel free to fork the project and contribute via pull requests. For major changes, please open an issue first to discuss what you'd like to change.
+License
+
+This project is open-source and free to use under the MIT License.

@@ -24,7 +24,7 @@ const Checkout = () => {
       const navigate = useNavigate();
       const dispatch = useAppDispatch();
       const [createOrder] = useCreateOrderMutation();
-      const [paymentType, setPaymentType] = useState<string>("card");
+      const [paymentType, setPaymentType] = useState<string>("cash on delivery");
       const [shipmentCost, setShipmentCost] = useState<number>(0);
       const data = useAppSelector(selectCart);
       const user = useAppSelector(selectUser);
@@ -38,7 +38,6 @@ const Checkout = () => {
                   customerInfo: {
                         name: user?.name || "",
                         phone: user?.phone || "",
-                        email: user?.email || "",
                         houseNo: "",
                         city: "",
                         region: "",
@@ -59,9 +58,7 @@ const Checkout = () => {
 
 
 
-      const total = carts?.reduce((acc: number, pd: TCartProduct) => {
-            return acc + pd.price * pd?.quantity;
-      }, 0);
+      const total = carts?.reduce((acc: number, next: TCartProduct) => acc + ((next?.isFlashDeals ? next?.offerPrice as number : next?.price) * next?.quantity), 0)
 
       const grandTotal = total + shipmentCost;
       const handleAddtoCart = (payload: TProduct) => {
@@ -72,17 +69,6 @@ const Checkout = () => {
             dispatch(decreaseQuantity(id))
       }
       const handleOrderSubmit: SubmitHandler<FieldValues> = async (orderPayload) => {
-
-
-            if (!user?.email) {
-                  toast.error("Login first please...");
-                  return;
-            }
-
-            if (user?.role === "admin") {
-                  return toast.error("You are admin, you can't place orders.");
-            }
-
             const toastId = toast.loading("Order Creating...");
 
             const modifiedPayload = {
@@ -94,10 +80,11 @@ const Checkout = () => {
 
             try {
                   const res = await createOrder(modifiedPayload) as TResponse;
+                  console.log(res)
                   if (res?.data?.success) {
                         toast.success("Order created successfully!", { id: toastId });
                         dispatch(clearCart());
-                        navigate("/verify-order", { state: res?.data?.data });
+                        navigate("/verify-order", { state: { ...res?.data?.data, totalCost: grandTotal } });
                   } else {
                         toast.error(JSON.stringify(res?.error?.data?.message), { id: toastId });
                   }
@@ -109,7 +96,7 @@ const Checkout = () => {
 
       return (
             <div className="min-h-screen py-10 px-4">
-                  <div className="max-w-7xl mx-auto">
+                  <div className="max-w-8xl mx-auto">
                         <div className="bg-gradient-to-r from-brandPrimary to-brandSecondary p-6 rounded-lg text-center mb-8">
                               <h1 className="text-3xl font-bold">Shipping</h1>
                               <p className="text-gray-700">Home - Cart - Shipping</p>
@@ -125,35 +112,23 @@ const Checkout = () => {
                                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
                                                       <Label htmlFor="firstName">First Name*</Label>
-                                                      <Input {...register("customerInfo.name", { required: "Name is required" })} id="firstName" readOnly placeholder="Enter your full name" />
+                                                      <Input {...register("customerInfo.name", { required: "Name is required" })} id="firstName" placeholder="Enter your full name" />
                                                       {errors.customerInfo?.name && <p className="text-red-500 text-sm">{errors.customerInfo.name.message}</p>}
                                                 </div>
-                                                <div>
-                                                      <Label htmlFor="lastName">Last Name (optional)</Label>
-                                                      <Input id="lastName" placeholder="Enter your last name" />
-                                                </div>
-                                          </div>
-
-                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                                 <div>
                                                       <Label htmlFor="phone">Phone Number*</Label>
                                                       <Input {...register("customerInfo.phone", { required: "Phone number is required" })} id="phone" placeholder="Enter your phone number" />
                                                       {errors.customerInfo?.phone && <p className="text-red-500 text-sm">{errors.customerInfo.phone.message}</p>}
                                                 </div>
-                                                <div>
-                                                      <Label htmlFor="email">Email Address*</Label>
-                                                      <Input {...register("customerInfo.email", { required: "Email is required" })} readOnly id="email" placeholder="Enter your email address" />
-                                                      {errors.customerInfo?.email && <p className="text-red-500 text-sm">{errors.customerInfo.email.message}</p>}
+                                          </div>
+
+
+                                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                                <div >
+                                                      <Label htmlFor="houseNo">Building Number*</Label>
+                                                      <Input {...register("customerInfo.houseNo", { required: "House number is required" })} id="houseNo" placeholder="Enter your building number" />
+                                                      {errors.customerInfo?.houseNo && <p className="text-red-500 text-sm">{errors.customerInfo.houseNo.message}</p>}
                                                 </div>
-                                          </div>
-
-                                          <div className="mt-4">
-                                                <Label htmlFor="houseNo">Building Number*</Label>
-                                                <Input {...register("customerInfo.houseNo", { required: "House number is required" })} id="houseNo" placeholder="Enter your building number" />
-                                                {errors.customerInfo?.houseNo && <p className="text-red-500 text-sm">{errors.customerInfo.houseNo.message}</p>}
-                                          </div>
-
-                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                                 <div>
                                                       <Label htmlFor="city">Zone*</Label>
                                                       <Input {...register("customerInfo.city", { required: "Zone is required" })} id="city" placeholder="Your Zone" />
@@ -217,7 +192,10 @@ const Checkout = () => {
                                                                   <div>
                                                                         <h2 className="font-bold text-brandTextSecondary">{cart?.name.slice(0, 20)}...</h2>
                                                                         <p className="text-sm text-brandTextTertiary">
-                                                                              Price: <span className="text-brandSelect font-semibold text-base">{webData?.webInfo?.curr} {cart?.price * cart?.quantity}</span>
+                                                                              Price: <span className="text-brandSelect">{(cart?.isFlashDeals ? cart?.offerPrice as number : cart?.price)}</span>
+                                                                              <span> x {cart?.quantity}</span>
+                                                                              <span> = {(cart?.isFlashDeals ? cart?.offerPrice as number : cart?.price) * cart?.quantity || 1}</span>
+                                                                              <span> {webData?.webInfo?.curr}</span>
                                                                         </p>
                                                                   </div>
                                                             </div>
@@ -252,7 +230,7 @@ const Checkout = () => {
                                                 <Separator />
                                                 <div>
                                                       <span className="font-semibold">Payment Method</span>
-                                                      <RadioGroup defaultValue="card" className="flex justify-between items-center mt-3" onValueChange={value => setPaymentType(value)}>
+                                                      <RadioGroup defaultValue="cash on delivery" className="flex justify-between items-center mt-3" onValueChange={value => setPaymentType(value)}>
                                                             <Label htmlFor="r1" className={`flex items-center space-x-2 border p-2 rounded-md cursor-pointer ${paymentType == 'cash on delivery' && 'bg-brandSelect text-white'}`}>
                                                                   <RadioGroupItem value="cash on delivery" id="r1" className="hidden" />
                                                                   <span>Cash on Delivery</span>
@@ -265,7 +243,7 @@ const Checkout = () => {
                                                 </div>
                                           </CardContent>
                                           <CardFooter>
-                                                <Button type="submit" className="w-full">Confirm Order</Button>
+                                                <Button disabled={carts?.length == 0} type="submit" className="w-full">Confirm Order</Button>
                                           </CardFooter>
                                     </Card>
                               </div>

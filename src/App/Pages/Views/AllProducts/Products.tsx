@@ -34,7 +34,7 @@ const Products = () => {
 
       // for pagination
       const [page, setPage] = useState<number>(1);
-      const [limit, setLimit] = useState<number>(20);
+      const [limit, setLimit] = useState<number>(50);
 
 
 
@@ -165,7 +165,14 @@ const Products = () => {
                                                 <div className="text-center space-y-2 mt-4">
                                                       <h2 dir="auto" className="text-brandTextPrimary font-semibold text-xl hover:text-brandSelect"> <Link dir="auto" to={`/product-details/${product._id}`} >{language == "en" ? product?.name?.slice(0, 20) : product?.name_native?.slice(0, 20)} ...</Link></h2>
                                                       <small dir="auto" className="text-[#888888]">{language == 'en' ? product?.category?.name : product?.category?.name_ar}</small>
-                                                      <h3 dir="auto" className="text-brandSelect font-bold">{language == 'en' ? product.price : <span className="text-2xl">{product?.price_native}</span>} {product?.currency}</h3>
+                                                      {
+                                                            product?.isFlashDeals ?
+                                                                  <div className="flex justify-center gap-1 pt-1">
+                                                                        <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {product?.currency}</sup>
+                                                                        <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {product?.currency}</h3>
+                                                                  </div> :
+                                                                  <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {product?.currency}</h3>
+                                                      }
                                                 </div>
 
                                                 <div className="flex items-center justify-center  mt-2">
@@ -204,7 +211,7 @@ const Products = () => {
                                                       product?.isInStock == false && <p className="absolute top-0 text-xs py-1 left-0 z-50 bg-brandSelect text-white px-2 rounded-md">Out Stock</p>
                                                 }
                                                 {
-                                                      product?.isFlashDeals == true && <OfferStiker offer={"10%"} />
+                                                      product?.isFlashDeals == true && <OfferStiker offer={product?.offer as number} />
                                                 }
                                           </div>
                                     ))}

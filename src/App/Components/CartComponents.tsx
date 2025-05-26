@@ -28,7 +28,7 @@ const CartComponents = () => {
             dispatch(removeFromCart(id))
             toast.success("Product removed.")
       }
-      const totalPrice = carts?.reduce((acc, next) => acc + (next?.price * next?.quantity), 0)
+      const totalPrice = carts?.reduce((acc, next) => acc + ((next?.isFlashDeals ? next?.offerPrice as number : next?.price) * next?.quantity), 0)
       const handleAddtoCart = (payload: TProduct) => {
             dispatch(addToCart(payload))
       }
@@ -62,7 +62,7 @@ const CartComponents = () => {
 
 
                                                       <p className="text-xs"><span>Category -</span> <span className="italic text-brandTextPrimary">{cart?.category?.name}</span></p>
-                                                      <h2 className="text-brandTextTertiary text-sm">Price- <span className="text-brandSelect font-semibold text-base">{cart.price} {data?.data?.webInfo?.webInfo?.curr}</span></h2>
+                                                      <h2 className="text-brandTextTertiary text-sm">Price- <span className="text-brandSelect font-semibold text-base">{cart?.isFlashDeals ? cart?.offerPrice : cart?.price} {data?.data?.webInfo?.webInfo?.curr}</span></h2>
 
                                                       <div className="mt-3">
                                                             <button

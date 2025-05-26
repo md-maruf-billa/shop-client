@@ -41,7 +41,7 @@ const VerifyOrder = () => {
                                     <p className="font-semibold">Postal code: #{state?.customerInfo?.city}</p>
                                     <p>Building No : {state?.customerInfo?.houseNo}</p>
                                     <p>Zone : {state?.customerInfo?.city}</p>
-                                    <p>State : {state?.customerInfo?.city}</p>
+                                    <p>State : {state?.customerInfo?.region}</p>
                               </div>
                         </div>
 
@@ -56,7 +56,8 @@ const VerifyOrder = () => {
                                     <tr className="bg-brandSecondary text-gray-700">
                                           <th className="p-2 text-left">Item</th>
                                           <th className="p-2 text-center">Quantity</th>
-                                          <th className="p-2 text-right">Price</th>
+                                          <th className="p-2 text-center">Price</th>
+                                          <th className="p-2 text-right">Amount</th>
                                     </tr>
                               </thead>
                               <tbody>
@@ -64,13 +65,15 @@ const VerifyOrder = () => {
                                           <tr className="border-b" key={index}>
                                                 <td className="p-2 text-gray-700">{item?._id?.name}</td>
                                                 <td className="p-2 text-gray-700 text-center">{item?.quantity}</td>
-                                                <td className="p-2 text-right text-gray-700">{item?._id?.price} {webData?.curr}</td>
+                                                <td className="p-2 text-gray-700 text-center">{item?._id?.isFlashDeals ? item?._id?.offerPrice : item?._id?.price}</td>
+                                                <td className="p-2 text-right text-gray-700">{(item?._id?.isFlashDeals ? item?._id?.offerPrice : item?._id?.price) * item?.quantity} {webData?.curr}</td>
                                           </tr>
                                     ))}
 
                                     {/* shipment cost */}
                                     <tr className="border-b font-semibold">
                                           <td className="p-2 text-gray-700">Shipment Cost</td>
+                                          <td className="p-2 text-gray-700"></td>
                                           <td className="p-2 text-gray-700"></td>
                                           <td className="p-2 text-right text-gray-700">{state?.shipmentCost} {webData?.curr}</td>
                                     </tr>

@@ -34,6 +34,7 @@ import { OrderInvoice } from "../Components/Customs/OrderInvoice";
 import RiderReport from "../Pages/Dashboards/Admin/manage_rider's_with_info/RiderReport";
 import OfferedProduct from "../Pages/Views/OfferProduct/OfferProduct";
 import SalesReport from "../Pages/Dashboards/Admin/SalesReport/SalesReport";
+import { FlashFrom } from "../Components/FlashFrom";
 
 const MainRouter = createBrowserRouter([
       {
@@ -55,11 +56,11 @@ const MainRouter = createBrowserRouter([
                   },
                   {
                         path: "verify-order",
-                        element: <Auth access="user"><VerifyOrder /></Auth>
+                        element: <VerifyOrder />
                   },
                   {
                         path: "check-out",
-                        element: <Auth access="user"><Checkout /></Auth>
+                        element: <Checkout />
                   },
                   {
                         path: "orders",
@@ -167,6 +168,10 @@ const MainRouter = createBrowserRouter([
                   {
                         path: "rider-report",
                         element: <RiderReport />
+                  },
+                  {
+                        path: "manage-product/add-flash",
+                        element: <FlashFrom />
                   }
             ]
 

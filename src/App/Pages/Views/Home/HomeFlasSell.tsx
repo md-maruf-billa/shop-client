@@ -27,15 +27,22 @@ const HomeFlasSell = () => {
                                           <img className="rounded-sm h-[170px] w-full" src={product?.imageUrls} alt="" />
                                     </div>
                                     <div className="text-center space-y-2 mt-4">
-                                          <h2 className="text-brandTextPrimary font-semibold text-xl hover:text-brandSelect"> <Link dir="auto" to={`/product-details/${product._id}`} >{language == "en" ? product?.name : product?.name_native}</Link></h2>
+                                          <h2 className="text-brandTextPrimary font-semibold text-xl hover:text-brandSelect"> <Link dir="auto" to={`/product-details/${product._id}`} >{language == "en" ? product?.name.slice(0, 30) : product?.name_native.slice(0, 30)} ..</Link></h2>
                                           <small dir="auto" className="text-[#888888]">{product?.category?.name}</small>
-                                          <h3 dir="auto" className="text-brandSelect font-bold">{product.price} QAR</h3>
+                                          {
+                                                product?.isFlashDeals ?
+                                                      <div className="flex justify-center gap-1 pt-1">
+                                                            <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {product?.currency}</sup>
+                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {product?.currency}</h3>
+                                                      </div> :
+                                                      <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {product?.currency}</h3>
+                                          }
                                     </div>
                                     {
                                           product?.isInStock == false && <p className="absolute top-0 text-xs py-1 left-0 z-50 bg-brandSelect text-white px-2 rounded-md">Out Stock</p>
                                     }
                                     {
-                                          product?.isFlashDeals == true && <OfferStiker offer={"10%"} />
+                                          product?.isFlashDeals == true && <OfferStiker offer={product?.offer as number} />
                                     }
 
                               </div>)}

@@ -82,7 +82,7 @@ export function OrderInvoice() {
                                           <p className="font-semibold">Postal code: #{order?.customerInfo?.city}</p>
                                           <p>Building No : {order?.customerInfo?.houseNo}</p>
                                           <p>Zone : {order?.customerInfo?.city}</p>
-                                          <p>State : {order?.customerInfo?.city}</p>
+                                          <p>State : {order?.customerInfo?.region}</p>
                                     </div>
                               </div>
 
@@ -95,9 +95,10 @@ export function OrderInvoice() {
                               <table className="w-full border-collapse mt-8">
                                     <thead>
                                           <tr className="bg-brandSecondary text-gray-700">
-                                                <th className="p-2 text-left">Item</th>
+                                                <th className="p-2 text-left">Product Name</th>
                                                 <th className="p-2 text-center">Quantity</th>
-                                                <th className="p-2 text-right">Price</th>
+                                                <th className="p-2 text-center">Price</th>
+                                                <th className="p-2 text-right">Amount</th>
                                           </tr>
                                     </thead>
                                     <tbody>
@@ -105,7 +106,8 @@ export function OrderInvoice() {
                                                 <tr className="border-b" key={index}>
                                                       <td className="p-2 text-gray-700">{item?._id?.name}</td>
                                                       <td className="p-2 text-gray-700 text-center">{item?.quantity}</td>
-                                                      <td className="p-2 text-right text-gray-700">{item?._id?.price} {webData?.curr}</td>
+                                                      <td className="p-2 text-gray-700 text-center">{item?._id?.isFlashDeals ? item?._id?.offerPrice : item?._id?.price}</td>
+                                                      <td className="p-2 text-right text-gray-700">{(item?._id?.isFlashDeals ? item?._id?.offerPrice : item?._id?.price) * item?.quantity} {webData?.curr}</td>
                                                 </tr>
                                           ))}
 
@@ -113,14 +115,15 @@ export function OrderInvoice() {
                                           <tr className="border-b font-semibold">
                                                 <td className="p-2 text-gray-700">Shipment Cost</td>
                                                 <td className="p-2 text-gray-700"></td>
+                                                <td className="p-2 text-gray-700"></td>
                                                 <td className="p-2 text-right text-gray-700">{order?.shipmentCost} {webData?.curr}</td>
                                           </tr>
                                     </tbody>
                               </table>
 
                               {/* Total Amount */}
-                              <div className="flex justify-between mt-4 text-lg font-semibold">
-                                    <span>Total:</span>
+                              <div className="flex justify-between mt-4 text-lg font-semibold bg-brandPrimary p-2 rounded-lg">
+                                    <span>Total :</span>
                                     <span>{order?.totalCost} {webData?.curr}</span>
                               </div>
 
@@ -181,8 +184,10 @@ export function OrderInvoice() {
                               <h3 className="font-bold mb-4">Change Order Status:</h3>
 
                               <Button onClick={() => changeOrderStatus("Cancel")} disabled={order?.orderStatus == "Shipped"} variant={"destructive"}>Canceled</Button>
-                              <Button onClick={() => changeOrderStatus("Shipped")} disabled={order?.orderStatus == "Shipped" || order?.orderStatus == "Cancel" || order?.orderStatus == "Pending" || order?.orderStatus == "Rider Assigned"} className="bg-green-500 ml-4">Shipped</Button>
-                              <Button onClick={() => changeOrderStatus("On the way")} disabled={order?.orderStatus == "Shipped" || order?.orderStatus == "Cancel" || order?.orderStatus == "Pending" || order?.orderStatus == "On the way"} className="bg-green-500 ml-4">Pick Order</Button>
+
+                              <Button onClick={() => changeOrderStatus("Shipped")} disabled={order?.orderStatus == "Shipped" || order?.orderStatus == "Cancel"} className="bg-green-500 ml-4">Shipped</Button>
+
+                              <Button onClick={() => changeOrderStatus("On the way")} disabled={order?.orderStatus == "Shipped" || order?.orderStatus == "Cancel" || order?.orderStatus == "On the way"} className="bg-green-500 ml-4">Pick Order</Button>
 
 
                         </div>

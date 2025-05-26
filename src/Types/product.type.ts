@@ -10,6 +10,8 @@ export type TProduct = {
   stock: number
   isInStock: boolean
   weight: number | null
+  offerPrice?: number | null;
+  offer?: number | null;
   category: {
     name: string
     name_ar: string
