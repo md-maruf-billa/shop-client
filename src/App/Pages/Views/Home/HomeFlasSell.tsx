@@ -19,8 +19,8 @@ const HomeFlasSell = () => {
             <div className="mt-20">
                   <div className="flex items-center justify-between">
                         <div>
-                              <p className="flex items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" /> {t("EXCITING BEST PRICE")}</p>
-                              <h1 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t("Best Price")}</h1>
+                              <p className="flex items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" /> {t("EXCITING BEST OFFERS")}</p>
+                              <h1 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t("BEST OFFER")}</h1>
                         </div>
                   </div>
                   <div className="mt-16 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8   py-5">

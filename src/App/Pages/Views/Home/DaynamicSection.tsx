@@ -2,6 +2,7 @@ import { useGetAllCategoryQuery, useGetExtraSectionQuery } from "@/App/Redux/fea
 import { useAppSelector } from "@/App/Redux/hook"
 import bar from "@/assets/bar.png"
 import { TCategory } from "@/Types"
+import { t } from "i18next"
 import { Link } from "react-router"
 
 export type TSection = {
@@ -21,8 +22,8 @@ export default function DaynamicSection() {
                 data?.data?.map((section: TSection) =>
                     <div key={section._id} className="my-20">
                         <div>
-                            <p className="flex items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" /> {section?.title}</p>
-                            <h1 className="text-4xl font-semibold text-brandTextPrimary mt-4">{section?.name}</h1>
+                            <p className="flex items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" /> {t(`${section?.title}`)}</p>
+                            <h1 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t(`${section?.name}`)}</h1>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5 lg:gap-8 mt-14">
                             {

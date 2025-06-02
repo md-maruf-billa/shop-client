@@ -36,8 +36,8 @@ const HomeNewProduct = () => {
 
             <div className="mt-16">
                   <div>
-                        <p className="flex items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" /> {t("SOME QUALITY ITEMS")}</p>
-                        <h1 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t("New Release products")}</h1>
+                        <p className="flex uppercase items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" /> {t("We have just arrived")}</p>
+                        <h1 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t("Our store's newest products")}</h1>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-8 mt-14">
@@ -83,6 +83,7 @@ const HomeNewProduct = () => {
                                                       </>
                                                 ) : (
                                                       <Button
+                                                      dir="auto"
                                                             disabled={!product?.isInStock}
                                                             variant={"outline"}
                                                             onClick={() => handleAddtoCart(product)}

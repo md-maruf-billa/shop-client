@@ -14,7 +14,6 @@ export function OrderInvoice() {
       const location = useLocation();
       const { data: fetchData, isLoading, isFetching, refetch } = useVerifyOrderQuery(location?.state)
       const order = fetchData?.data
-      console.log(order)
       const invoiceRef = useRef<HTMLDivElement>(null);
       const { data: data1 } = useGetWebInfoQuery(undefined)
       const webData = data1?.data?.webInfo?.webInfo
@@ -82,7 +81,7 @@ export function OrderInvoice() {
                                           <p className="font-semibold">Postal code: #{order?.customerInfo?.city}</p>
                                           <p>Building No : {order?.customerInfo?.houseNo}</p>
                                           <p>Zone : {order?.customerInfo?.city}</p>
-                                          <p>State : {order?.customerInfo?.region}</p>
+                                          <p>Street number : {order?.customerInfo?.region}</p>
                                     </div>
                               </div>
 

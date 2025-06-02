@@ -1,11 +1,10 @@
-import CustomButton from "@/App/Components/Customs/CustomButton";
 import { useGetBookByIdQuery } from "@/App/Redux/features/product/product.api";
 import { selectUser } from "@/App/Redux/features/user/user.slice";
 import { useAppDispatch, useAppSelector } from "@/App/Redux/hook";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { TBookReview, TProduct, TResponse } from "@/Types";
-import { Heart, ShoppingCart } from "lucide-react";
+import {  ShoppingCart } from "lucide-react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
@@ -94,7 +93,7 @@ const ProductDetails = () => {
       // handle order
 
       if (isLoading) return <Loading />;
-      const { imageUrls, name, name_native, price_native, description, isInStock, category, availableColors, specification, keyFeatures, price, weight, stock, offer, offerPrice, isFlashDeals } = data?.data as TProduct;
+      const { imageUrls, name, name_native, description, isInStock, category, availableColors, specification, keyFeatures, price, weight, stock, offer, offerPrice, isFlashDeals } = data?.data as TProduct;
       const handleAddtoCart = (payload: TProduct) => {
             dispatch(addToCart(payload))
       }
@@ -121,10 +120,10 @@ const ProductDetails = () => {
                         <div className="w-full lg:w-1/2 space-y-6 bg-white rounded-md  p-8">
                               <h1 dir="auto" className="text-2xl font-semibold text-brandTextPrimary">{language == 'en' ? name : name_native}</h1>
                               <div className="flex justify-between items-center flex-wrap gap-4 lg:gap-0">
-                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-bold"><FaStar className="text-yellow-500" />{reviews?.data.length} Ratings</h3>
-                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm ">({reviews?.data.length})+ Reviews</h3>
-                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm ">({reviews?.data.length})+ Sold</h3>
-                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm ">Category: {category?.name}</h3>
+                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-bold"><FaStar className="text-yellow-500" />{reviews?.data.length} {t("Ratings")}</h3>
+                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm ">({reviews?.data.length})+ {t("Reviews")}</h3>
+                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm ">({reviews?.data.length})+ {t("Sold")}</h3>
+                                    <h3 className="bg-brandPrimary flex items-center gap-2 w-fit px-2 lg:px-4 py-2 rounded-full text-xs lg:text-sm ">{t("Categories")} : {category?.name}</h3>
                               </div>
                               <hr />
                               <div className="flex justify-between items-center">
@@ -135,14 +134,14 @@ const ProductDetails = () => {
                                                       <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{price} {currency}</sup>
                                                       <h3 dir="auto" className="text-brandSelect text-2xl font-bold">{offerPrice} {currency}</h3>
                                                 </div> :
-                                                <h2 className="font-bold text-2xl text-brandTextTertiary">Price: {language == 'en' ? price : price_native} {currency}</h2>
+                                                <h2 dir="auto" className="font-bold text-2xl text-brandTextTertiary">{t("Price")} : {price} {currency}</h2>
                                     }
-                                    <h2><span className="text-brandTextTertiary">Weight:</span> {weight} gm</h2>
+                                    <h2 dir="auto"><span className="text-brandTextTertiary">{t("Weight")} :</span> {weight} gm</h2>
                               </div>
                               <hr />
                               {/* color section */}
                               <div>
-                                    <h2><span className="text-gray-500">Available colors:</span></h2>
+                                    <h2 dir="auto"><span className="text-gray-500">{t("Available colors")} :</span></h2>
                                     <div className="flex items-center gap-2 mt-4">
                                           {availableColors?.map((color, index) => (
                                                 <button
@@ -156,20 +155,17 @@ const ProductDetails = () => {
                               </div>
 
                               <div className="flex items-center justify-between">
-                                    <h3 className="text-gray-500">Quantity: <span className="text-brandTextPrimary font-bold">{stock}</span></h3>
-                                    <h3 className="text-gray-500">Stock Status: <span className={`${isInStock ? "text-green-600" : "text-red-700"}`}>{isInStock ? "In Stock" : "Out of Stock"}</span></h3>
+                                    <h3 dir="auto" className="text-gray-500">{t("Quantity")} : <span className="text-brandTextPrimary font-bold">{stock}</span></h3>
+                                    <h3 dir="auto" className="text-gray-500">{t("Stock Status")} : <span className={`${isInStock ? "text-green-600" : "text-red-700"}`}>{isInStock ? "In Stock" : "Out of Stock"}</span></h3>
                               </div>
                               <hr />
 
-                              <div className="flex items-center justify-between gap-5">
-                                    <button title="Bookmark" className="border p-2 rounded-full hover:bg-brandTextPrimary  hover:text-white transition-colors duration-500"><Heart /></button>
+                              <div className="flex items-center justify-end gap-5">
 
                                     {stock !== 0 ?
-                                          <button onClick={() => handleNavigate(data?.data)}> <button className="border cursor-pointer  px-8 py-2 rounded-full bg-brandTextPrimary hover:bg-brandTextPrimary/60 text-white hover:text-brandSecondary  transition-colors duration-500 w-full">Buy Now</button></button>
+                                          <button onClick={() => handleNavigate(data?.data)}> <button className="border cursor-pointer  px-8 py-2 rounded-full bg-brandTextPrimary hover:bg-brandTextPrimary/60 text-white hover:text-brandSecondary  transition-colors duration-500 w-full">{t("Buy Now")}</button></button>
                                           :
-                                          <p className="border  px-8 py-2 rounded-full bg-brandSelect  text-white hover:text-brandSecondary  transition-colors duration-500">Out of Stock</p>}
-
-                                    <button onClick={() => handleAddtoCart(data?.data)} title="Add to Cart" className="border p-2 rounded-full  hover:bg-brandTextPrimary  hover:text-white transition-colors duration-500"><ShoppingCart /></button>
+                                          <p className="border  px-8 py-2 rounded-full bg-brandSelect  text-white hover:text-brandSecondary  transition-colors duration-500">{t("Out of Stock")}</p>}
 
                               </div>
                         </div>
@@ -177,18 +173,18 @@ const ProductDetails = () => {
                   {/* description */}
                   <div className="mt-8 lg:mt-0">
                         <div className="text-[#888] text-justify">
-                              <span className="italic text-brandTextSecondary font-bold">Descriptions,</span> <br />
+                              <span dir="auto" className="italic text-brandTextSecondary font-bold">{t("Descriptions")}</span> <br />
                               <h3 dir="auto" className="text-black font-bold  my-2">{name}</h3>
                               {description}
                         </div>
                         <div>
-                              <h2 className="text-black font-bold mt-4 mb-2">Key Features</h2>
+                              <h2 className="text-black font-bold mt-4 mb-2">{t("Key Features")}</h2>
                               {
                                     keyFeatures?.map((ft, indx) => <p key={indx} className="text-gray-500">-{ft}</p>)
                               }
                         </div>
                         <div>
-                              <h2 className="text-black font-bold mt-4 mb-2">Specification</h2>
+                              <h2 className="text-black font-bold mt-4 mb-2">{t("Specification")}</h2>
                               <div>
                                     {Object.entries(specification).map(([key, value], idx) => <p key={idx} className="text-gray-500"><span className="font-bold text-brandTextPrimary">{key}:</span> {value}</p>)}
                               </div>
@@ -202,7 +198,7 @@ const ProductDetails = () => {
                   <hr className="mt-10" />
                   <div className="flex flex-col md:flex-row justify-between gap-10 mt-10">
                         <div className="h-[500px] overflow-y-auto scroll-smooth w-full md:w-auto lg:w-full">
-                              <h1>Reviews & Retings</h1>
+                              <h1>{t("Reviews & Retings")}</h1>
 
                               {
                                     reviews?.data.map((review: TBookReview, idx: number) =>
@@ -229,22 +225,22 @@ const ProductDetails = () => {
 
                         </div>
                         <form onSubmit={handleSubmit(handelSubmitReview)} className="w-full md:w-1/2 lg:w-1/3 border h-fit p-4">
-                              <h1 className="tracking-[4px] text-brandTextTertiary font-semibold text-xl text-center">GIVE YOUR REVIEW</h1>
+                              <h1 className="tracking-[4px] text-brandTextTertiary font-semibold text-xl text-center">{t("GIVE YOUR REVIEW")}</h1>
 
                               <div className="mt-10 mb-4">
                                     <Rating style={{ maxWidth: 200, width: "100%" }} value={rating} onChange={setRating} />
                                     <div>
-                                          <div className="text-sm text-brandTextTertiary">{`Selected: ${getRating(rating)}`}</div>
+                                          <div className="text-sm text-brandTextTertiary">{t("Selected")} : {`${getRating(rating)}`}</div>
                                     </div>
                               </div>
-                              <Textarea {...register("feedBack")} placeholder="Your Custom Feed Back" />
-                              <div className="w-full mt-10 flex justify-center items-center"><CustomButton btnText="Submit Review" /></div>
+                              <Textarea {...register("feedBack")} placeholder={t("Your Custom Feed Back")} />
+                              <div className="w-full mt-10 flex justify-center items-center"><Button className="w-full">{t("Submit Review")}</Button></div>
                         </form>
                   </div>
 
 
                   <div>
-                        <h1 className="text-2xl font-semibold text-brandTextPrimary my-4">Related Products</h1>
+                        <h1 className="text-2xl font-semibold text-brandTextPrimary my-4">{t("Related Products")}</h1>
                         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-8">
                               {relatedProducts?.data?.data?.slice(0, 20)?.map((product: TProduct) => (
                                     <div key={product._id} className="border p-4 rounded-lg hover:border-brandSelect relative">

@@ -41,7 +41,7 @@ const VerifyOrder = () => {
                                     <p className="font-semibold">Postal code: #{state?.customerInfo?.city}</p>
                                     <p>Building No : {state?.customerInfo?.houseNo}</p>
                                     <p>Zone : {state?.customerInfo?.city}</p>
-                                    <p>State : {state?.customerInfo?.region}</p>
+                                    <p>Street number : {state?.customerInfo?.region}</p>
                               </div>
                         </div>
 

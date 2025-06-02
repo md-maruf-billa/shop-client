@@ -88,15 +88,15 @@ const Products = () => {
                               
                               <Select onValueChange={setSort}>
                                     <SelectTrigger className="w-[130px] md:w-[180px]">
-                                          <SelectValue placeholder="Sort By" />
+                                          <SelectValue placeholder={t("Sort By")} />
                                     </SelectTrigger>
                                     <SelectContent>
                                           <SelectGroup>
                                                 <SelectLabel>Sort By</SelectLabel>
-                                                <SelectItem value="name">Name: A → Z</SelectItem>
-                                                <SelectItem value="-name">Name: Z → A</SelectItem>
-                                                <SelectItem value="price">Price: Low → High</SelectItem>
-                                                <SelectItem value="-price">Price: High → Low</SelectItem>
+                                                <SelectItem value="name">{t("Name A to Z")}</SelectItem>
+                                                <SelectItem value="-name">{t("Name Z to A")}</SelectItem>
+                                                <SelectItem value="price">{t("Price Low To high")}</SelectItem>
+                                                <SelectItem value="-price">{t("Price High To Low")}</SelectItem>
                                           </SelectGroup>
                                     </SelectContent>
                               </Select>
@@ -110,7 +110,7 @@ const Products = () => {
                                     }
                               }}>
                                     <SelectTrigger className="w-[130px] md:w-[180px]">
-                                          <SelectValue placeholder="Filter with Category" />
+                                          <SelectValue placeholder={t("Filter With Category")} />
                                     </SelectTrigger>
                                     <SelectContent>
                                           <SelectGroup>
@@ -131,7 +131,7 @@ const Products = () => {
                               <Input
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    placeholder="Search Product"
+                                    placeholder={t("Search Product")}
                                     className="rounded-full"
                               />
                               <button
@@ -221,17 +221,17 @@ const Products = () => {
                                     disabled={page === 1}
                                     className="px-4 py-2 border rounded disabled:opacity-50"
                               >
-                                    Previous
+                                    {t("Previous")}
                               </button>
                               <span className="text-sm text-gray-600">
-                                    Page {data.data.meta.page} of {data.data.meta.totalPage}
+                                    {t("Page")} {data.data.meta.page} {t("in")} {data.data.meta.totalPage}
                               </span>
                               <button
                                     onClick={() => setPage(prev => Math.min(prev + 1, data.data.meta.totalPage))}
                                     disabled={page === data.data.meta.totalPage}
                                     className="px-4 py-2 border rounded disabled:opacity-50"
                               >
-                                    Next
+                                    {t("Next")}
                               </button>
 
                               <select
@@ -242,10 +242,10 @@ const Products = () => {
                                     }}
                                     className="px-3 py-2 border rounded bg-white text-gray-700"
                               >
-                                    <option value={10}>10 / page</option>
-                                    <option value={20}>20 / page</option>
-                                    <option value={50}>50 / page</option>
-                                    <option value={100}>100 / page</option>
+                                    <option value={10}>10 / {t("Page")}</option>
+                                    <option value={20}>20 / {t("Page")}</option>
+                                    <option value={50}>50 / {t("Page")}</option>
+                                    <option value={100}>100 / {t("Page")}</option>
                               </select>
 
                         </div>

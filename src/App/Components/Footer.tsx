@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useTranslation } from "react-i18next";
 import { FaFacebook } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa6";
 import { IoLogoYoutube } from "react-icons/io";
 import { IoLogoTiktok } from "react-icons/io5";
 import { Link } from "react-router";
 const Footer = ({ web }: { web: any }) => {
+       const { t } = useTranslation();
       const year = new Date().getFullYear();
       return (
             <footer className=" footer-background mt-24 p-8 md:p-20">
@@ -26,24 +29,24 @@ const Footer = ({ web }: { web: any }) => {
 
                         {/* middle */}
                         <div className=" text-center">
-                              <h2 className="text-brandSelect md:text-xl font-semibold">LINKS</h2>
+                              <h2 className="text-brandSelect md:text-xl font-semibold">{t("LINKS")}</h2>
                               <div className="space-y-3 text-sm md:text-base mt-4 flex flex-col justify-start">
-                                    <Link to="/">Home</Link>
-                                    <Link to="/about-us">About</Link>
-                                    <Link to="/products">Products</Link>
+                                    <Link to="/">{t("Home")}</Link>
+                                    <Link to="/about-us">{t("About us")}</Link>
+                                    <Link to="/products">{t("Products")}</Link>
                               </div>
 
                         </div>
 
                         {/* end */}
                         <div className=" text-end col-span-2 md:col-span-1">
-                              <h2 className="text-brandSelect md:text-xl font-semibold">LATEST PROJECT</h2>
+                              {/* <h2 className="text-brandSelect md:text-xl font-semibold">LATEST PROJECT</h2> */}
                         </div>
                   </div>
 
                   <div className="flex justify-between items-center mt-20">
-                        <p>© {year} {web?.webInfo?.name}. All Rights Reserved.</p>
-                        <p> Privacy | <Link to="/terms" className="text-brandSelect">Terms of Service</Link></p>
+                        <p>© {year} {web?.webInfo?.name}. {t("All Rights Reserved")}.</p>
+                        <p> {t("Privacy")} | <Link to="/terms" className="text-brandSelect">{t("Terms of Service")}</Link></p>
                   </div>
             </footer>
       );

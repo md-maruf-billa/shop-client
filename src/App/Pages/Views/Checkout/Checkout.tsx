@@ -17,8 +17,10 @@ import { useCreateOrderMutation } from "@/App/Redux/features/order/order.api";
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useGetWebInfoQuery } from "@/App/Redux/features/admin/admin.api";
 import { Minus, Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Checkout = () => {
+      const { t } = useTranslation()
       const { data: webDataFromDb } = useGetWebInfoQuery(undefined);
       const webData = webDataFromDb?.data?.webInfo;
       const navigate = useNavigate();
@@ -98,25 +100,25 @@ const Checkout = () => {
             <div className="min-h-screen py-10 px-4">
                   <div className="max-w-8xl mx-auto">
                         <div className="bg-gradient-to-r from-brandPrimary to-brandSecondary p-6 rounded-lg text-center mb-8">
-                              <h1 className="text-3xl font-bold">Shipping</h1>
-                              <p className="text-gray-700">Home - Cart - Shipping</p>
+                              <h1 className="text-3xl font-bold">{t("Shipping")}</h1>
+                              {/* <p className="text-gray-700">Home - Cart - Shipping</p> */}
                         </div>
 
                         <form onSubmit={handleSubmit(handleOrderSubmit)} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                               <Card className="md:col-span-2">
                                     <CardHeader>
-                                          <CardTitle>Customer Information</CardTitle>
+                                          <CardTitle>{t("Customer Information")}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                           {/* --- Customer info fields (no changes) --- */}
                                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
-                                                      <Label htmlFor="firstName">First Name*</Label>
+                                                      <Label htmlFor="firstName">{t("Name")}*</Label>
                                                       <Input {...register("customerInfo.name", { required: "Name is required" })} id="firstName" placeholder="Enter your full name" />
                                                       {errors.customerInfo?.name && <p className="text-red-500 text-sm">{errors.customerInfo.name.message}</p>}
                                                 </div>
                                                 <div>
-                                                      <Label htmlFor="phone">Phone Number*</Label>
+                                                      <Label htmlFor="phone">{t("Phone Number")}*</Label>
                                                       <Input {...register("customerInfo.phone", { required: "Phone number is required" })} id="phone" placeholder="Enter your phone number" />
                                                       {errors.customerInfo?.phone && <p className="text-red-500 text-sm">{errors.customerInfo.phone.message}</p>}
                                                 </div>
@@ -125,30 +127,30 @@ const Checkout = () => {
 
                                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                                                 <div >
-                                                      <Label htmlFor="houseNo">Building Number*</Label>
+                                                      <Label htmlFor="houseNo">{t("Building Number")}*</Label>
                                                       <Input {...register("customerInfo.houseNo", { required: "House number is required" })} id="houseNo" placeholder="Enter your building number" />
                                                       {errors.customerInfo?.houseNo && <p className="text-red-500 text-sm">{errors.customerInfo.houseNo.message}</p>}
                                                 </div>
                                                 <div>
-                                                      <Label htmlFor="city">Zone*</Label>
+                                                      <Label htmlFor="city">{t("Zone")}*</Label>
                                                       <Input {...register("customerInfo.city", { required: "Zone is required" })} id="city" placeholder="Your Zone" />
                                                       {errors.customerInfo?.city && <p className="text-red-500 text-sm">{errors.customerInfo.city.message}</p>}
                                                 </div>
                                                 <div>
-                                                      <Label htmlFor="region">State*</Label>
-                                                      <Input {...register("customerInfo.region", { required: "State is required" })} id="region" placeholder="Your state" />
+                                                      <Label htmlFor="region">{t("Street number")}*</Label>
+                                                      <Input {...register("customerInfo.region", { required: "State is required" })} id="region" placeholder="Your street" />
                                                       {errors.customerInfo?.region && <p className="text-red-500 text-sm">{errors.customerInfo.region.message}</p>}
                                                 </div>
                                           </div>
 
                                           <div className="mt-4">
-                                                <Label htmlFor="comment">Comment</Label>
+                                                <Label htmlFor="comment">{t("Comment")}</Label>
                                                 <Textarea {...register("customerInfo.comment")} id="comment" placeholder="Write your comment" />
                                           </div>
 
                                           {/* --- Shipping options --- */}
                                           <div className="mt-6">
-                                                <h2 className="text-xl font-semibold mb-2">Shipping</h2>
+                                                <h2 className="text-xl font-semibold mb-2">{t("Shipping")}</h2>
                                                 <RadioGroup
                                                       value={selectedShippingTitle}
                                                       onValueChange={value => {
@@ -182,7 +184,7 @@ const Checkout = () => {
                               <div className="space-y-6">
                                     <Card>
                                           <CardHeader>
-                                                <CardTitle>Selected Product</CardTitle>
+                                                <CardTitle>{t("Selected Product")}</CardTitle>
                                           </CardHeader>
                                           <CardContent>
                                                 {carts?.map((cart: TCartProduct) => (
@@ -192,7 +194,7 @@ const Checkout = () => {
                                                                   <div>
                                                                         <h2 className="font-bold text-brandTextSecondary">{cart?.name.slice(0, 20)}...</h2>
                                                                         <p className="text-sm text-brandTextTertiary">
-                                                                              Price: <span className="text-brandSelect">{(cart?.isFlashDeals ? cart?.offerPrice as number : cart?.price)}</span>
+                                                                              Price : <span className="text-brandSelect">{(cart?.isFlashDeals ? cart?.offerPrice as number : cart?.price)}</span>
                                                                               <span> x {cart?.quantity}</span>
                                                                               <span> = {(cart?.isFlashDeals ? cart?.offerPrice as number : cart?.price) * cart?.quantity || 1}</span>
                                                                               <span> {webData?.webInfo?.curr}</span>
@@ -216,34 +218,39 @@ const Checkout = () => {
                                     {/* Payment Details */}
                                     <Card>
                                           <CardHeader>
-                                                <CardTitle>Payment Details</CardTitle>
+                                                <CardTitle>{t("Payment Details")}</CardTitle>
                                           </CardHeader>
                                           <CardContent className="space-y-3">
-                                                <div className="flex justify-between"><span>Subtotal</span><span>{webData?.webInfo?.curr} {total}</span></div>
-                                                <div className="flex justify-between"><span>Discount</span><span>{webData?.webInfo?.curr} 0</span></div>
-                                                <div className="flex justify-between"><span>Shipment cost</span><span>{webData?.webInfo?.curr} {shipmentCost}</span></div>
+                                                <div className="flex justify-between"><span>{t("Subtotal")}</span><span>{webData?.webInfo?.curr} {total}</span></div>
+                                                {/* <div className="flex justify-between"><span>Discount</span><span>{webData?.webInfo?.curr} 0</span></div> */}
+                                                <div className="flex justify-between"><span>{t("Shipment cost")}</span><span>{webData?.webInfo?.curr} {shipmentCost}</span></div>
                                                 <Separator />
                                                 <div className="flex justify-between font-semibold">
-                                                      <span>Grand total</span>
+                                                      <span>{t("Grand total")}</span>
                                                       <span>{webData?.webInfo?.curr} {grandTotal}</span>
                                                 </div>
                                                 <Separator />
                                                 <div>
-                                                      <span className="font-semibold">Payment Method</span>
+                                                      <span className="font-semibold">{t("Payment Method")}</span>
                                                       <RadioGroup defaultValue="cash on delivery" className="flex justify-between items-center mt-3" onValueChange={value => setPaymentType(value)}>
                                                             <Label htmlFor="r1" className={`flex items-center space-x-2 border p-2 rounded-md cursor-pointer ${paymentType == 'cash on delivery' && 'bg-brandSelect text-white'}`}>
                                                                   <RadioGroupItem value="cash on delivery" id="r1" className="hidden" />
-                                                                  <span>Cash on Delivery</span>
+                                                                  <span>{t("Cash on Delivery")}</span>
                                                             </Label>
                                                             <Label htmlFor="r2" className={`flex items-center space-x-2 border p-2 rounded-md cursor-pointer ${paymentType == 'card' && 'bg-brandSelect text-white'}`}>
                                                                   <RadioGroupItem value="card" id="r2" className="hidden" />
-                                                                  <span>Card</span>
+                                                                  <span>{t("Card")}</span>
+                                                            </Label>
+
+                                                            <Label htmlFor="r3" className={`flex items-center space-x-2 border p-2 rounded-md cursor-pointer ${paymentType == 'Transfer Fawren' && 'bg-brandSelect text-white'}`}>
+                                                                  <RadioGroupItem value="Transfer Fawren" id="r3" className="hidden" />
+                                                                  <span>{t("Transfer Fawren")}</span>
                                                             </Label>
                                                       </RadioGroup>
                                                 </div>
                                           </CardContent>
                                           <CardFooter>
-                                                <Button disabled={carts?.length == 0} type="submit" className="w-full">Confirm Order</Button>
+                                                <Button disabled={carts?.length == 0} type="submit" className="w-full">{t("Confirm Order")}</Button>
                                           </CardFooter>
                                     </Card>
                               </div>
