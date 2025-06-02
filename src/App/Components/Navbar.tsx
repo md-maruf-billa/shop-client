@@ -26,17 +26,17 @@ const Navbar = ({ web }: { web: any }) => {
                         {/* Main nav */}
                         <div className="flex justify-center items-center">
                               <div className="flex items-center gap-0">
-                                    <Button className='bg-transparent text-[#000000] hover:bg-transparent text-xs lg:text-base border-r md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
-                                          <NavLink className="" to={"/"}>{t("HOME")}</NavLink>
+                                    <Button className='bg-transparent text-[#000000] uppercase hover:bg-transparent text-xs lg:text-base border-r md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
+                                          <NavLink className="" to={"/"}>{t("Home")}</NavLink>
                                     </Button>
-                                    <Button className='bg-transparent text-[#000000] hover:bg-transparent text-xs lg:text-base border-r md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
-                                          <NavLink to={"/products"}>{t("PRODUCTS")}</NavLink>
+                                    <Button className='bg-transparent text-[#000000] hover:bg-transparent uppercase text-xs lg:text-base border-r md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
+                                          <NavLink to={"/products"}>{t("Products")}</NavLink>
                                     </Button>
                                     <Button className='bg-transparent text-[#000000] hover:bg-transparent text-xs lg:text-base border-r md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
                                           <NavLink to={"/offered-product"}>{t("BEST PRICE")}</NavLink>
                                     </Button>
-                                    <Button className='bg-transparent text-[#000000] hover:bg-transparent text-xs lg:text-base  md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
-                                          <NavLink to={"/about-us"}>{t("ABOUT US")}</NavLink>
+                                    <Button className='bg-transparent text-[#000000] uppercase hover:bg-transparent text-xs lg:text-base  md:px-4 lg:px-8 border-[#d1d1d175] rounded-none'>
+                                          <NavLink to={"/about-us"}>{t("About us")}</NavLink>
                                     </Button>
                               </div>
                         </div>
@@ -53,10 +53,10 @@ const Navbar = ({ web }: { web: any }) => {
                                                 <CustomFavIcon faviconUrl={web?.webInfo?.logo} />
                                           </div>
                                     </Link>
-                                    <NavLink onClick={() => setSheetOpen(false)} to={"/"}>{t("HOME")}</NavLink>
-                                    <NavLink onClick={() => setSheetOpen(false)} to={"/products"}>{t("PRODUCTS")}</NavLink>
-                                    <NavLink onClick={() => setSheetOpen(false)} to={"/offered-product"}>{t("BEST PRICE")}</NavLink>
-                                    <NavLink onClick={() => setSheetOpen(false)} to={"/about-us"}>{t("ABOUT US")}</NavLink>
+                                    <NavLink onClick={() => setSheetOpen(false)} className={"uppercase"} to={"/"}>{t("Home")}</NavLink>
+                                    <NavLink onClick={() => setSheetOpen(false)} className={"uppercase"} to={"/products"}>{t("Products")}</NavLink>
+                                    <NavLink onClick={() => setSheetOpen(false)} className={"uppercase"} to={"/offered-product"}>{t("BEST PRICE")}</NavLink>
+                                    <NavLink onClick={() => setSheetOpen(false)} className={"uppercase"} to={"/about-us"}>{t("About us")}</NavLink>
                               </div>
                         </SheetContent>
                   </Sheet>

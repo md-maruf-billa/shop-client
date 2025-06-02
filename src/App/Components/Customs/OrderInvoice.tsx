@@ -65,7 +65,7 @@ export function OrderInvoice() {
                               <div className="flex justify-between items-center border-b pb-4">
                                     <img src={webData?.logo} alt="Company logo" className="w-20" />
                                     <div className="text-right text-gray-600">
-                                          <p className="font-semibold text-brandSelect">Order Id #: {order?._id}</p>
+                                          <p className="font-semibold text-brandSelect">Order Id #: {order?.orderId}</p>
                                           <p>Created: {dt(order?.createdAt)}</p>
                                           <p>Currency: {webData?.curr}</p>
                                     </div>

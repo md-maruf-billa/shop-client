@@ -1,4 +1,5 @@
-import { useCreateCategoryMutation } from "@/App/Redux/features/admin/admin.api"
+import { TSection } from "@/App/Pages/Views/Home/DaynamicSection"
+import { useCreateCategoryMutation, useGetExtraSectionQuery } from "@/App/Redux/features/admin/admin.api"
 import { Button } from "@/components/ui/button"
 import {
       Dialog,
@@ -11,30 +12,36 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState } from "react"
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
+import { Controller, FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 export function CreateCategory() {
       const [modalOpen, setModalOpen] = useState<boolean>(false)
       const [createCategory] = useCreateCategoryMutation()
+      const { data } = useGetExtraSectionQuery(undefined)
       const {
             register,
             handleSubmit,
+            control,
+            reset,
             formState: { errors },
       } = useForm()
 
       const handleCreateCategory: SubmitHandler<FieldValues> = async (data) => {
+            console.log(data)
             const id = toast.loading("Creating......")
             const formData = new FormData()
             const img = data?.image[0]
             formData.append("image", img)
-            formData.append("data", JSON.stringify({ name: data?.name, name_ar: data?.nameAr }))
+            formData.append("data", JSON.stringify({ name: data?.name, name_ar: data?.nameAr, sectionId: data?.sectionId }))
 
             const res = await createCategory(formData)
             if (res.data?.success) {
                   toast.success(res?.data?.message, { id })
                   setModalOpen(false)
+                  reset()
             } else {
                   toast.error("Something went wrong", { id })
             }
@@ -72,6 +79,29 @@ export function CreateCategory() {
                                           className="col-span-3"
                                     />
                                     {errors.nameAr && <p className="text-red-500 text-sm">{errors.nameAr.message as string}</p>}
+                              </div>
+                              <div className="space-y-2">
+                                    <Label htmlFor="name-ar">Section For Category</Label>
+                                    <Controller
+                                          control={control}
+                                          name="sectionId"
+                                          render={({ field }) => (
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                      <SelectTrigger className="w-full">
+                                                            <SelectValue placeholder="Select Section" />
+                                                      </SelectTrigger>
+                                                      <SelectContent>
+                                                            <SelectGroup>
+                                                                  {data?.data?.map((section: TSection) => (
+                                                                        <SelectItem key={section._id} value={section._id}>
+                                                                              {section.name}
+                                                                        </SelectItem>
+                                                                  ))}
+                                                            </SelectGroup>
+                                                      </SelectContent>
+                                                </Select>
+                                          )}
+                                    />
                               </div>
 
                               <div className="space-y-2">

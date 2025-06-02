@@ -24,7 +24,7 @@ const VerifyOrder = () => {
                         <div className="flex justify-between items-center border-b pb-4">
                               <img src={webData?.logo} alt="Company logo" className="w-20" />
                               <div className="text-right text-gray-600">
-                                    <p className="font-semibold text-brandSelect">Order Id #: {state?._id}</p>
+                                    <p className="font-semibold text-brandSelect">Order Id #: {state?.orderId}</p>
                                     <p>Created: {state?.createdAt}</p>
                                     <p>Currency: {webData?.curr}</p>
                               </div>

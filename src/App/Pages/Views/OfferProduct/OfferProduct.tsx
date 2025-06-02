@@ -9,12 +9,13 @@ import { TProduct } from "@/Types";
 import ScrollToTop from "@/App/Components/Customs/ScrollTop";
 
 import OfferStiker from "@/App/Components/Customs/OfferStiker";
+import { Button } from "@/components/ui/button";
 
 const OfferedProduct = () => {
     const carts = useAppSelector(selectCart)
     const { language } = useAppSelector(state => state.language)
     const dispatch = useAppDispatch()
-    const { data, isLoading, isFetching } = useGetAllProductQuery([{ name: "isActive", value: true }, { name: "isDeleted", value: false }, { name: "isFlashDeals", value: true }]);
+    const { data, isLoading, isFetching } = useGetAllProductQuery([{ name: "isActive", value: true }, { name: "isFlashDeals", value: true }]);
 
 
 
@@ -31,7 +32,7 @@ const OfferedProduct = () => {
         <>
             <ScrollToTop />
             <div className="text-center py-8 space-y-2 mb-8">
-                <h1 className="text-brandTextPrimary text-4xl font-semibold">Our Best Offered Product's</h1>
+                {/* <h1 className="text-brandTextPrimary text-4xl font-semibold">Our Best Offered Product's</h1> */}
             </div>
 
             {/* Books Display */}
@@ -78,12 +79,14 @@ const OfferedProduct = () => {
                                                 </button>
                                             </>
                                         ) : (
-                                            <button
+                                            <Button
+                                                disabled={!product?.isInStock}
+                                                variant={"outline"}
                                                 onClick={() => handleAddtoCart(product)}
                                                 className="border w-full px-8 py-2 rounded-full hover:bg-brandSelect hover:text-white transition-colors duration-500 flex items-center gap-2 justify-center"
                                             >
                                                 <ShoppingCart /> Add to Cart
-                                            </button>
+                                            </Button>
                                         )
                                     }
                                 </div>

@@ -1,23 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, ShoppingCart } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import Loading from "@/App/Components/Customs/Loading";
 import NoData from "@/App/Components/Customs/NoData";
 import { useAppDispatch, useAppSelector } from "@/App/Redux/hook";
 import { addToCart, decreaseQuantity, selectCart } from "@/App/Redux/cart.slice";
 import { useGetAllProductQuery } from "@/App/Redux/features/product/product.api";
 import { TCategory, TProduct } from "@/Types";
-import { useGetAllCategoryQuery } from "@/App/Redux/features/admin/admin.api";
+import { useGetAllCategoryQuery, useGetWebInfoQuery } from "@/App/Redux/features/admin/admin.api";
 import ScrollToTop from "@/App/Components/Customs/ScrollTop";
 import OfferStiker from "@/App/Components/Customs/OfferStiker";
+import { Button } from "@/components/ui/button";
+import HomeTopCategories from "../Home/HomeTopCategories";
+import { t } from "i18next";
 
 function useQuery() {
       return new URLSearchParams(useLocation().search);
 }
 
 const Products = () => {
+      const { data: webInfo } = useGetWebInfoQuery(undefined)
+      const currency = webInfo?.data?.webInfo?.webInfo?.curr;
       const query = useQuery();
       const category = query.get("category");
       const carts = useAppSelector(selectCart)
@@ -25,9 +31,8 @@ const Products = () => {
       const dispatch = useAppDispatch()
       const { data: categories } = useGetAllCategoryQuery(undefined)
       // Local state for filters
-      const [priceRange, setPriceRange] = useState<string | undefined>();
       const [sort, setSort] = useState<string | undefined>();
-      const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
+      // const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
       const [searchTerm, setSearchTerm] = useState<string>(""); // Stores user input
       const [queryParams, setQueryParams] = useState<{ name: string; value: string | boolean | number | undefined }[]>([]);
       const { data, isLoading, isFetching } = useGetAllProductQuery(queryParams);
@@ -35,22 +40,18 @@ const Products = () => {
       // for pagination
       const [page, setPage] = useState<number>(1);
       const [limit, setLimit] = useState<number>(50);
-
+      const navigate = useNavigate()
 
 
       // Update queryParams whenever filters change
       useEffect(() => {
             const newParams: { name: string; value: string | boolean | number | undefined }[] = [];
             newParams.push({ name: "isActive", value: true })
-            newParams.push({ name: "isDeleted", value: false })
-            if ((categoryFilter ?? "").length > 2) {
-                  newParams.push({ name: "category", value: categoryFilter });
-            }
+            // if ((categoryFilter ?? "").length > 2) {
+            //       newParams.push({ name: "category", value: categoryFilter });
+            // }
             if (category) {
                   newParams.push({ name: "category", value: category });
-            }
-            if (priceRange && priceRange !== "all") {
-                  newParams.push({ name: "price", value: Number(priceRange) });
             }
             if (searchTerm?.length > 1) {
                   newParams.push({ name: "searchTerm", value: searchTerm });
@@ -61,7 +62,7 @@ const Products = () => {
             newParams.push({ name: "page", value: page });
             newParams.push({ name: "limit", value: limit });
             setQueryParams(newParams);
-      }, [categoryFilter, priceRange, sort, searchTerm, category, page, limit]);
+      }, [sort, searchTerm, category, page, limit]);
 
 
       const handleAddtoCart = (payload: TProduct) => {
@@ -75,33 +76,18 @@ const Products = () => {
 
       return (
             <>
-                  <ScrollToTop />
-                  <div className="text-center py-8 space-y-2 mb-8">
+                  <ScrollToTop isRefresh={isFetching} />
+                  {/* <div className="text-center py-8 space-y-2 mb-8">
                         <h1 className="text-brandTextPrimary text-4xl font-semibold">New Release Product</h1>
                         <p className="text-brandTextTertiary">1000+ product are published by different brand and category every day.</p>
-                  </div>
+                  </div> */}
 
                   {/* Filter and search section */}
                   <div className="flex my-8 flex-wrap md:flex-nowrap justify-between gap-5 md:gap-0">
                         <div className="flex flex-wrap items-center gap-5">
-                              <Select onValueChange={setPriceRange}>
-                                    <SelectTrigger className="w-[160px] md:w-[180px]">
-                                          <SelectValue placeholder="Filter with Price" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                          <SelectGroup>
-                                                <SelectLabel>Price Range</SelectLabel>
-                                                <SelectItem value="all">All</SelectItem>
-                                                <SelectItem value="20">00 -  20</SelectItem>
-                                                <SelectItem value="40">20 -  40</SelectItem>
-                                                <SelectItem value="60">40 -  60</SelectItem>
-                                                <SelectItem value="100">60 - 100</SelectItem>
-                                                <SelectItem value="500">100 - 500</SelectItem>
-                                          </SelectGroup>
-                                    </SelectContent>
-                              </Select>
+                              
                               <Select onValueChange={setSort}>
-                                    <SelectTrigger className="w-[160px] md:w-[180px]">
+                                    <SelectTrigger className="w-[130px] md:w-[180px]">
                                           <SelectValue placeholder="Sort By" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -115,8 +101,15 @@ const Products = () => {
                                     </SelectContent>
                               </Select>
 
-                              <Select onValueChange={setCategoryFilter}>
-                                    <SelectTrigger className="w-[160px] md:w-[180px]">
+                              {/* <Select defaultValue={category as string || " "} onValueChange={setCategoryFilter}> */}
+                              <Select onValueChange={(value) => {
+                                    if (value.trim() === "") {
+                                          navigate("/products"); // remove all category filters
+                                    } else {
+                                          navigate(`/products?category=${value}`);
+                                    }
+                              }}>
+                                    <SelectTrigger className="w-[130px] md:w-[180px]">
                                           <SelectValue placeholder="Filter with Category" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -124,8 +117,8 @@ const Products = () => {
                                                 <SelectLabel>Select Category</SelectLabel>
                                                 <SelectItem value=" ">All</SelectItem>
                                                 {categories?.data?.map((category: TCategory) => (
-                                                      <SelectItem key={category._id} value={category?._id}>
-                                                            {category?.name}
+                                                      <SelectItem key={category._id} value={category._id}>
+                                                            {category.name}
                                                       </SelectItem>
                                                 ))}
                                           </SelectGroup>
@@ -168,10 +161,10 @@ const Products = () => {
                                                       {
                                                             product?.isFlashDeals ?
                                                                   <div className="flex justify-center gap-1 pt-1">
-                                                                        <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {product?.currency}</sup>
-                                                                        <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {product?.currency}</h3>
+                                                                        <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {currency}</sup>
+                                                                        <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {currency}</h3>
                                                                   </div> :
-                                                                  <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {product?.currency}</h3>
+                                                                  <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {currency}</h3>
                                                       }
                                                 </div>
 
@@ -197,12 +190,14 @@ const Products = () => {
                                                                         </button>
                                                                   </>
                                                             ) : (
-                                                                  <button
+                                                                  <Button
+                                                                        disabled={!product?.isInStock}
+                                                                        variant={"outline"}
                                                                         onClick={() => handleAddtoCart(product)}
                                                                         className="border w-full px-8 py-2 rounded-full hover:bg-brandSelect hover:text-white transition-colors duration-500 flex items-center gap-2 justify-center"
                                                                   >
-                                                                        <ShoppingCart /> Add to Cart
-                                                                  </button>
+                                                                        <ShoppingCart /> {t("Add to Cart")}
+                                                                  </Button>
                                                             )
                                                       }
                                                 </div>
@@ -255,6 +250,8 @@ const Products = () => {
 
                         </div>
                   )}
+
+                  <HomeTopCategories />
 
             </>
       );

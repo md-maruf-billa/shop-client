@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateCategory } from "@/App/Components/Customs/CreateCategoryModal";
+import { UpdateCategoryModal } from "@/App/Components/Customs/UpdateCategoryModal";
 import { useDeleteCategoryMutation, useGetAllCategoryQuery } from "@/App/Redux/features/admin/admin.api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -58,7 +60,7 @@ const ManageCategory = () => {
       return (
             <div>
                   <div className="flex justify-between items-center">
-                        <h2 className="text-3xl font-bold text-brandTextPrimary">Active Cateygories</h2>
+                        <h2 className="text-3xl font-bold text-brandTextPrimary">Active Categories</h2>
                         <CreateCategory />
                   </div>
 
@@ -83,7 +85,10 @@ const ManageCategory = () => {
                                                 </TableCell>
                                                 <TableCell>{category?.name} ({category?.name_ar})</TableCell>
                                                 <TableCell><p className="border bg-green-400 w-fit px-2 py-1 rounded-lg">Active</p></TableCell>
-                                                <TableCell className="text-right"><Button onClick={() => handelDeleteCategory(category._id)} variant="destructive">Delete</Button></TableCell>
+                                                <TableCell className="text-right space-x-2">
+                                                      <UpdateCategoryModal category={category} />
+                                                      <Button onClick={() => handelDeleteCategory(category._id)} variant="destructive">Delete</Button>
+                                                </TableCell>
 
                                           </TableRow>
                                     ))}

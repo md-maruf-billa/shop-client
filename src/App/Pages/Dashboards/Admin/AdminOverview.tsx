@@ -9,6 +9,7 @@ import { Link } from "react-router";
 import SaledProduct from "./SaledProduct";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Loading from "@/App/Components/Customs/Loading";
+import { AddExtraSectionModal } from "./AddExtraSectionModal";
 
 const AdminOverview = () => {
       const { data, isLoading } = useSaleReportQuery({
@@ -37,9 +38,15 @@ const AdminOverview = () => {
                         <div>
                               <h2 className="text-xl md:text-3xl font-semibold"><span className="text-brandTextPrimary">{greeting}</span> <span className="text-brandTextTertiary italic">{user?.name}</span></h2>
                         </div>
-                        <Link to="update-web-content">
-                              <Button className="bg-brandTextPrimary">Edit Content</Button>
-                        </Link>
+                        <div className="flex items-center gap-3">
+                             <AddExtraSectionModal/>
+                              <Link to="add-flat-banner">
+                                    <Button className="bg-brandTextPrimary">Add Top Banner</Button>
+                              </Link>
+                              <Link to="update-web-content">
+                                    <Button className="bg-brandTextPrimary">Edit Content</Button>
+                              </Link>
+                        </div>
                   </div>
 
                   <AdminSelce totalOrders={data?.data?.totalOrders} totalRevenue={data?.data?.totalRevenue} totalShipmentCost={data?.data?.totalShipmentCost} />
@@ -69,7 +76,7 @@ const AdminOverview = () => {
                         </Table>
                   </div>
                   <div className="px-8">
-                        <SaledProduct saleProducts={data?.data?.saleProducts} />
+                        <SaledProduct saleProducts={data?.data?.saleProducts?.slice(0,30)} />
                   </div>
             </div>
       );

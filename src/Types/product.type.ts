@@ -22,7 +22,8 @@ export type TProduct = {
   specification: Record<string, any>
   keyFeatures: string[]
   isDeleted: boolean
-  _id: string
+  _id: string,
+  isTop: boolean
 }
 
 
@@ -44,5 +45,7 @@ export type TCategory = {
   name: string
   categoryLogo?: string
   _id: string
-  name_ar: string
+  name_ar: string,
+  isTop: boolean,
+  sectionId?: string
 }

@@ -49,7 +49,6 @@ export default function AddNewProduct() {
                   specification: [{ key: "", value: "" }],
                   photo: "",
                   name_native: "",
-                  price_native: "",
                   currency: webData?.data?.webInfo?.webInfo?.curr
             },
       });
@@ -172,33 +171,6 @@ export default function AddNewProduct() {
                                                             </FormItem>
                                                       )}
                                                 />
-                                                <FormField
-                                                      control={form.control}
-                                                      name="currency"
-                                                      render={({ field }) => (
-                                                            <FormItem className="w-1/2">
-                                                                  <FormLabel>Currency</FormLabel>
-                                                                  <Select
-                                                                        onValueChange={field.onChange}
-                                                                        defaultValue={field.value}
-                                                                  >
-                                                                        <FormControl>
-                                                                              <SelectTrigger>
-                                                                                    <SelectValue placeholder="Select currency" />
-                                                                              </SelectTrigger>
-                                                                        </FormControl>
-                                                                        <SelectContent>
-                                                                              <SelectItem value='QAR'>QAR</SelectItem>
-                                                                              <SelectItem value='SAR'>SAR</SelectItem>
-                                                                              <SelectItem value='USD'>USD</SelectItem>
-                                                                              <SelectItem value='ITL'>ITL</SelectItem>
-                                                                        </SelectContent>
-                                                                  </Select>
-
-                                                                  <FormMessage />
-                                                            </FormItem>
-                                                      )}
-                                                />
                                           </div>
                                           {/* Native */}
                                           <FormField
@@ -214,22 +186,6 @@ export default function AddNewProduct() {
                                                       </FormItem>
                                                 )}
                                           />
-
-                                          <div className="flex justify-between items-center gap-5">
-                                                <FormField
-                                                      control={form.control}
-                                                      name="price_native"
-                                                      render={({ field }) => (
-                                                            <FormItem>
-                                                                  <FormLabel>Price (Native)</FormLabel>
-                                                                  <FormControl>
-                                                                        <Input {...field} value={field.value || ""} dir="rtl" />
-                                                                  </FormControl>
-                                                                  <FormMessage />
-                                                            </FormItem>
-                                                      )}
-                                                />
-                                          </div>
 
                                           <FormField
                                                 control={form.control}

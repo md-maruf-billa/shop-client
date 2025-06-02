@@ -35,6 +35,8 @@ import RiderReport from "../Pages/Dashboards/Admin/manage_rider's_with_info/Ride
 import OfferedProduct from "../Pages/Views/OfferProduct/OfferProduct";
 import SalesReport from "../Pages/Dashboards/Admin/SalesReport/SalesReport";
 import { FlashFrom } from "../Components/FlashFrom";
+import AddFlatBannerForm from "../Pages/Dashboards/Admin/AddFlatBannerForm";
+import ManageExtraSection from "../Pages/Dashboards/Admin/ManageExtraSection";
 
 const MainRouter = createBrowserRouter([
       {
@@ -172,6 +174,14 @@ const MainRouter = createBrowserRouter([
                   {
                         path: "manage-product/add-flash",
                         element: <FlashFrom />
+                  },
+                  {
+                        path: "add-flat-banner",
+                        element: <AddFlatBannerForm />
+                  },
+                  {
+                        path: "manage-extra-section",
+                        element: <ManageExtraSection />
                   }
             ]
 

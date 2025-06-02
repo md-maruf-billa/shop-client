@@ -63,6 +63,15 @@ const adminAPI = baseAPI.injectEndpoints({
       }),
       invalidatesTags: ['CATEGORY']
     }),
+    updateCategory: build.mutation<void, { id: string; payload: any }>({
+      query: ({ id, payload }) => ({
+        url: `/category/${id}`,
+        method: 'PATCH',
+        body: payload,
+      }),
+      invalidatesTags: ['CATEGORY'],
+    }),
+
     getAllRider: build.query({
       query: () => ({
         url: '/user/get-all-rider',
@@ -124,7 +133,59 @@ const adminAPI = baseAPI.injectEndpoints({
         url: `/web/delete-shipping-fee/${id}`,
         method: 'DELETE'
       })
-    })
+    }),
+    createNewTopBanner: build.mutation({
+      query: payload => ({
+        url: `/top-banner`,
+        method: 'POST',
+        body: payload
+      }),
+      invalidatesTags: ["TOP-BANNER"]
+    }),
+    getTopBanner: build.query({
+      query: () => ({
+        url: '/top-banner',
+        method: 'GET'
+      }),
+      providesTags: ["TOP-BANNER"]
+    }),
+    deleteTopBanner: build.mutation({
+      query: id => ({
+        url: `/top-banner/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['TOP-BANNER']
+    }),
+    addExtraSection: build.mutation({
+      query: payload => ({
+        url: `/section`,
+        method: 'POST',
+        body: payload
+      }),
+      invalidatesTags: ["EXTRA-SECTION"]
+    }),
+    updateExtraSection: build.mutation({
+      query: (payload: { id: string, data: { title?: string, name?: string } }) => ({
+        url: `/section/${payload.id}`,
+        method: 'PATCH',
+        body: payload.data
+      }),
+      invalidatesTags: ["EXTRA-SECTION"]
+    }),
+    deleteExtraSection: build.mutation({
+      query: id => ({
+        url: `/section/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ["EXTRA-SECTION"]
+    }),
+    getExtraSection: build.query({
+      query: () => ({
+        url: '/section',
+        method: 'GET'
+      }),
+      providesTags: ["EXTRA-SECTION"]
+    }),
     //end
   })
 })
@@ -145,5 +206,13 @@ export const {
   useSaleReportQuery,
   useUpdateShippingFeeMutation,
   useDeleteShippingFeeMutation,
-  useDashboardReportQuery
+  useDashboardReportQuery,
+  useUpdateCategoryMutation,
+  useCreateNewTopBannerMutation,
+  useGetTopBannerQuery,
+  useDeleteTopBannerMutation,
+  useAddExtraSectionMutation,
+  useDeleteExtraSectionMutation,
+  useGetExtraSectionQuery,
+  useUpdateExtraSectionMutation
 } = adminAPI

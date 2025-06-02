@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useGetAllCategoryQuery } from '@/App/Redux/features/admin/admin.api';
@@ -167,10 +168,6 @@ const UpdateProduct = () => {
                                     <div className="grid w-full gap-1.5">
                                           <Label htmlFor="price">Price</Label>
                                           <Input {...register('price')} type="number" id="price" placeholder="Ex: 25" />
-                                    </div>
-                                    <div className="grid w-full gap-1.5">
-                                          <Label htmlFor="price">Price (Native)</Label>
-                                          <Input {...register('price_native')} type="text" id="price" placeholder="Ex: 25" />
                                     </div>
                                     <div className="grid w-full gap-1.5">
                                           <Label htmlFor="weight">Weight (gm)</Label>

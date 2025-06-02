@@ -51,11 +51,11 @@ const NavEnd = () => {
                                     {
                                           user?.role == "admin" ?
                                                 <Link to={"/admin"}>
-                                                      <Button >{t("Dashboard")}</Button>
+                                                      <Button className='uppercase'>{t("Dashboard")}</Button>
                                                 </Link> :
                                                 user?.role == "rider" ?
                                                       <Link to={"/rider"}>
-                                                            <Button>{t("Dashboard")}</Button>
+                                                            <Button className='uppercase'>{t("Dashboard")}</Button>
                                                       </Link>
                                                       :
                                                       <DropdownMenu>

@@ -1,4 +1,5 @@
 import OfferStiker from "@/App/Components/Customs/OfferStiker";
+import { useGetWebInfoQuery } from "@/App/Redux/features/admin/admin.api";
 import { useGetAllProductQuery } from "@/App/Redux/features/product/product.api";
 import { useAppSelector } from "@/App/Redux/hook";
 import bar from "@/assets/bar.png"
@@ -7,9 +8,11 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
 const HomeFlasSell = () => {
+      const { data: webInfo } = useGetWebInfoQuery(undefined)
+      const currency = webInfo?.data?.webInfo?.webInfo?.curr;
       const { t } = useTranslation()
       const { language } = useAppSelector(state => state.language)
-      const { data, isLoading } = useGetAllProductQuery([{ name: "isActive", value: true }, { name: "isDeleted", value: false }, { name: "isFlashDeals", value: true }])
+      const { data, isLoading } = useGetAllProductQuery([{ name: "isActive", value: true }, { name: "isFlashDeals", value: true }])
       if (isLoading) return
 
       return (
@@ -32,10 +35,10 @@ const HomeFlasSell = () => {
                                           {
                                                 product?.isFlashDeals ?
                                                       <div className="flex justify-center gap-1 pt-1">
-                                                            <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {product?.currency}</sup>
-                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {product?.currency}</h3>
+                                                            <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {currency}</sup>
+                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {currency}</h3>
                                                       </div> :
-                                                      <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {product?.currency}</h3>
+                                                      <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {currency}</h3>
                                           }
                                     </div>
                                     {

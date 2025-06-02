@@ -40,6 +40,14 @@ export const bookApi = baseAPI.injectEndpoints({
       }),
       invalidatesTags: ['Book']
     }),
+    updateTop: build.mutation({
+      query: payload => ({
+        url: `/products/update-top`,
+        method: 'PUT',
+        body: payload
+      }),
+      invalidatesTags: ['Book']
+    }),
     updateProductFlashStatus: build.mutation({
       query: payload => ({
         url: `/products/update-flash`,
@@ -65,5 +73,6 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   useUpdateProductStatusMutation,
-  useUpdateProductFlashStatusMutation
+  useUpdateProductFlashStatusMutation,
+  useUpdateTopMutation
 } = bookApi

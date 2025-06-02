@@ -40,9 +40,9 @@ const CartComponents = () => {
       return (
             <Sheet onOpenChange={setOpenSheet} open={openSheet} >
                   <SheetTrigger asChild>
-                        <Button className='bg-transparent text-brandTextPrimary hover:bg-transparent text-xs lg:text-base border-r-2 rounded-none'>
+                        <Button className='bg-transparent uppercase text-brandTextPrimary hover:bg-transparent text-xs lg:text-base border-r-2 rounded-none'>
                               <HiOutlineShoppingBag />
-                              {t("CART")}: {carts?.length || 0}
+                              {t("Cart")}: {carts?.length || 0}
                         </Button>
                   </SheetTrigger>
                   <SheetContent className="overflow-y-scroll w-96">

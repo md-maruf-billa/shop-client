@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Loading from "@/App/Components/Customs/Loading";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { TCategory, TProduct } from "@/Types";
 import { Avatar } from "@radix-ui/react-avatar";
 import { toast } from "sonner";
-import { useDeleteBookMutation, useGetAllProductQuery, useUpdateProductFlashStatusMutation, useUpdateProductStatusMutation } from "@/App/Redux/features/product/product.api";
+import { useDeleteBookMutation, useGetAllProductQuery, useUpdateProductFlashStatusMutation, useUpdateProductStatusMutation, useUpdateTopMutation } from "@/App/Redux/features/product/product.api";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import Swal from 'sweetalert2'
@@ -22,8 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { useGetAllCategoryQuery } from "@/App/Redux/features/admin/admin.api";
-import { IoMdAdd } from "react-icons/io";
-
+import { IoIosMove, IoMdAdd } from "react-icons/io";
+import { MdOutlinePlaylistRemove } from "react-icons/md";
 
 const ManageBook = () => {
       const [offerFilter, setOfferFilter] = useState<string | undefined>();
@@ -37,7 +37,10 @@ const ManageBook = () => {
       const { data: categories } = useGetAllCategoryQuery(undefined)
       const [deleteBook] = useDeleteBookMutation()
       const [updateStatus] = useUpdateProductStatusMutation()
+      const [updateTop] = useUpdateTopMutation()
       const [updateFlashStatus] = useUpdateProductFlashStatusMutation()
+      const [page, setPage] = useState<number>(1);
+      const [limit, setLimit] = useState<number>(20);
 
       useEffect(() => {
             const newParams: { name: string; value: string | boolean | number | undefined }[] = [];
@@ -75,9 +78,10 @@ const ManageBook = () => {
             if (searchTerm.length > 1) {
                   newParams.push({ name: "searchTerm", value: searchTerm })
             }
-
+            newParams.push({ name: "page", value: page });
+            newParams.push({ name: "limit", value: limit });
             setQueryParams(newParams);
-      }, [categoryFilter, offerFilter, stockFilter, deletedFilter, statusFilter, searchTerm]);
+      }, [categoryFilter, offerFilter, stockFilter, deletedFilter, statusFilter, searchTerm, page, limit]);
 
 
       const handleBookDelete = async (id: string) => {
@@ -111,6 +115,17 @@ const ManageBook = () => {
             const res = await updateStatus(payload)
             if (res.data) {
                   toast.success("Product status updated.", { id: toasId })
+            } else {
+                  toast.error("Something went wrong!!", { id: toasId })
+
+            }
+      }
+      const handleTop = async (id: string, status: boolean) => {
+            const toasId = toast.loading("Updating......")
+            const payload = { productId: id, status }
+            const res = await updateTop(payload)
+            if (res.data) {
+                  toast.success("Position updated.", { id: toasId })
             } else {
                   toast.error("Something went wrong!!", { id: toasId })
 
@@ -232,11 +247,10 @@ const ManageBook = () => {
                               </div>
                         </div>
                   </div>
-                  <div className="w-full hidden md:block">
+                  <div className="w-full">
                         {
                               isFetching ? <Loading /> :
                                     <Table >
-                                          <TableCaption>A list of your recent books.</TableCaption>
                                           <TableHeader>
                                                 <TableRow>
                                                       <TableHead className="w-[100px]">Cover</TableHead>
@@ -284,6 +298,22 @@ const ManageBook = () => {
                                                                                           </Link>
                                                                                     </MenubarItem>
                                                                                     <MenubarItem>
+                                                                                          {product?.isTop ?
+                                                                                                <button
+                                                                                                      onClick={() => handleTop(product?._id, false)}
+                                                                                                      className="flex items-center gap-2">
+                                                                                                      <MdOutlinePlaylistRemove />
+                                                                                                      Remove to Top
+                                                                                                </button> :
+                                                                                                <button
+                                                                                                      onClick={() => handleTop(product?._id, true)}
+                                                                                                      className="flex items-center gap-2">
+                                                                                                      <IoIosMove />
+                                                                                                      Move Top
+                                                                                                </button>
+                                                                                          }
+                                                                                    </MenubarItem>
+                                                                                    <MenubarItem>
                                                                                           {
                                                                                                 product?.isFlashDeals ?
 
@@ -321,33 +351,42 @@ const ManageBook = () => {
 
                   </div>
 
-                  {/* Cards for small screens */}
-                  <div className="block md:hidden space-y-4">
-                        {data?.data?.data?.map((product: TProduct) => (
-                              <div key={product._id} className="bg-white p-4 rounded-lg shadow-md border">
-                                    <div className="flex flex-col justify-center items-center gap-4">
-                                          <Avatar>
-                                                <AvatarImage src={product?.imageUrls} alt={product?.name} />
-                                                <AvatarFallback>{product?.name?.charAt(0)}</AvatarFallback>
-                                          </Avatar>
-                                          <div>
-                                                <h3 className="font-bold">{product?.name}</h3>
-                                                <p className="text-sm text-gray-500">{product?.category?.name}</p>
-                                          </div>
-                                    </div>
-                                    <p className="mt-2">Price: $ {product?.price}</p>
-                                    <p>Weight: {product?.weight} gm</p>
-                                    <div className="flex justify-between items-center mt-2">
-                                          <p className={`mt-1 px-2 w-fit py-1 rounded ${product?.isInStock ? "bg-green-300" : "bg-red-300"}`}>{product?.isInStock ? "In stock" : "Out of stock"}</p>
-                                          <Button onClick={() => handleBookDelete(product?._id)} className="bg-brandSelect text-white  hover:bg-brandSelect/60">
-                                                Delete
-                                          </Button>
-                                          <Link to={`/product-details/${product?._id}`}><Button>Details</Button></Link>
-                                    </div>
+                  {data?.data?.meta && data?.data?.meta.totalPage > 1 && (
+                        <div className="flex justify-center items-center gap-4 mt-10">
+                              <button
+                                    onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={page === 1}
+                                    className="px-4 py-2 border rounded disabled:opacity-50"
+                              >
+                                    Previous
+                              </button>
+                              <span className="text-sm text-gray-600">
+                                    Page {data.data.meta.page} of {data.data.meta.totalPage}
+                              </span>
+                              <button
+                                    onClick={() => setPage(prev => Math.min(prev + 1, data.data.meta.totalPage))}
+                                    disabled={page === data.data.meta.totalPage}
+                                    className="px-4 py-2 border rounded disabled:opacity-50"
+                              >
+                                    Next
+                              </button>
 
-                              </div>
-                        ))}
-                  </div>
+                              <select
+                                    value={limit}
+                                    onChange={(e) => {
+                                          setLimit(Number(e.target.value));
+                                          setPage(1);
+                                    }}
+                                    className="px-3 py-2 border rounded bg-white text-gray-700"
+                              >
+                                    <option value={10}>10 / page</option>
+                                    <option value={20}>20 / page</option>
+                                    <option value={50}>50 / page</option>
+                                    <option value={100}>100 / page</option>
+                              </select>
+
+                        </div>
+                  )}
             </div >
       );
 };

@@ -99,7 +99,7 @@ const ManageOrder = () => {
                                                 data?.data?.length > 0 ? <TableBody>
                                                       {data?.data?.map((order: any) => (
                                                             <TableRow key={order._id}>
-                                                                  <TableCell className="font-medium">{order?._id}</TableCell>
+                                                                  <TableCell className="font-medium">{order?.orderId}</TableCell>
                                                                   <TableCell>{order?.customerInfo?.name}</TableCell>
                                                                   <TableCell>{order?.customerInfo?.phone}</TableCell>
                                                                   <TableCell>{order?.customerInfo?.email}</TableCell>

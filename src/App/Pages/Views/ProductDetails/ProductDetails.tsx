@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { TBookReview, TProduct, TResponse } from "@/Types";
 import { Heart, ShoppingCart } from "lucide-react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import Loading from "@/App/Components/Customs/Loading";
@@ -19,10 +19,13 @@ import { FaStar } from "react-icons/fa";
 import ScrollToTop from "@/App/Components/Customs/ScrollTop";
 import { useGetAllProductQuery } from "@/App/Redux/features/product/product.api";
 import OfferStiker from "@/App/Components/Customs/OfferStiker";
+import { Button } from "@/components/ui/button";
+import { useGetWebInfoQuery } from "@/App/Redux/features/admin/admin.api";
+import { t } from "i18next";
 
 interface QueryParam {
       name: string;
-      value: string;
+      value: string | boolean;
 }
 
 function getRating(rating: number) {
@@ -43,6 +46,8 @@ function getRating(rating: number) {
 }
 
 const ProductDetails = () => {
+      const { data: webInfo } = useGetWebInfoQuery(undefined)
+      const currency = webInfo?.data?.webInfo?.webInfo?.curr;
       const { language } = useAppSelector(state => state.language)
       const dispatch = useAppDispatch()
       const carts = useAppSelector(selectCart)
@@ -54,10 +59,12 @@ const ProductDetails = () => {
       const [rating, setRating] = useState(0);
       const [queryParams, setQueryParams] = useState<QueryParam[]>([]);
       const { data: relatedProducts } = useGetAllProductQuery(queryParams);
+      const navegate = useNavigate()
 
       const { register, handleSubmit } = useForm();
 
       useEffect(() => {
+            setQueryParams([{ name: "isActive", value: true }]);
             if (data?.data?.category?._id) {
                   setQueryParams([{ name: "category", value: data.data.category._id }]);
             }
@@ -87,8 +94,7 @@ const ProductDetails = () => {
       // handle order
 
       if (isLoading) return <Loading />;
-      const { imageUrls, name, name_native, price_native, description, isInStock, category, availableColors, specification, keyFeatures, price, weight, stock, offer, currency, offerPrice, isFlashDeals } = data?.data as TProduct;
-
+      const { imageUrls, name, name_native, price_native, description, isInStock, category, availableColors, specification, keyFeatures, price, weight, stock, offer, offerPrice, isFlashDeals } = data?.data as TProduct;
       const handleAddtoCart = (payload: TProduct) => {
             dispatch(addToCart(payload))
       }
@@ -96,6 +102,11 @@ const ProductDetails = () => {
       const handleDecreaseQuantity = (id: TProduct) => {
             dispatch(decreaseQuantity(id))
       }
+      const handleNavigate = (payload: TProduct) => {
+            dispatch(addToCart(payload))
+            navegate("/check-out")
+      }
+
 
       return (
             <div>
@@ -154,7 +165,7 @@ const ProductDetails = () => {
                                     <button title="Bookmark" className="border p-2 rounded-full hover:bg-brandTextPrimary  hover:text-white transition-colors duration-500"><Heart /></button>
 
                                     {stock !== 0 ?
-                                          <Link to="/check-out" state={[{ ...data?.data, quantity: 1 }]}> <button className="border cursor-pointer  px-8 py-2 rounded-full bg-brandTextPrimary hover:bg-brandTextPrimary/60 text-white hover:text-brandSecondary  transition-colors duration-500 w-full">Buy Now</button></Link>
+                                          <button onClick={() => handleNavigate(data?.data)}> <button className="border cursor-pointer  px-8 py-2 rounded-full bg-brandTextPrimary hover:bg-brandTextPrimary/60 text-white hover:text-brandSecondary  transition-colors duration-500 w-full">Buy Now</button></button>
                                           :
                                           <p className="border  px-8 py-2 rounded-full bg-brandSelect  text-white hover:text-brandSecondary  transition-colors duration-500">Out of Stock</p>}
 
@@ -246,10 +257,10 @@ const ProductDetails = () => {
                                                 {
                                                       product?.isFlashDeals ?
                                                             <div className="flex justify-center gap-1 pt-1">
-                                                                  <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {product?.currency}</sup>
-                                                                  <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {product?.currency}</h3>
+                                                                  <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {currency}</sup>
+                                                                  <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {currency}</h3>
                                                             </div> :
-                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {product?.currency}</h3>
+                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {currency}</h3>
                                                 }
                                           </div>
 
@@ -275,12 +286,14 @@ const ProductDetails = () => {
                                                                   </button>
                                                             </>
                                                       ) : (
-                                                            <button
+                                                            <Button
+                                                                  disabled={!product?.isInStock}
+                                                                  variant={"outline"}
                                                                   onClick={() => handleAddtoCart(product)}
                                                                   className="border w-full px-8 py-2 rounded-full hover:bg-brandSelect hover:text-white transition-colors duration-500 flex items-center gap-2 justify-center"
                                                             >
-                                                                  <ShoppingCart /> Add to Cart
-                                                            </button>
+                                                                  <ShoppingCart /> {t("Add to Cart")}
+                                                            </Button>
                                                       )
                                                 }
                                           </div>

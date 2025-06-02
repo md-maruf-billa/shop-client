@@ -5,6 +5,7 @@ import {
   CarTaxiFront,
   ChartBarStacked,
   ChartColumn,
+  LayoutPanelTop,
   PanelTopOpen,
   Settings,
   ShoppingBasket,
@@ -59,6 +60,12 @@ const data = {
       title: "Manage Category",
       url: "manage-category",
       icon: ChartBarStacked,
+
+    },
+    {
+      title: "Manage Extra Section",
+      url: "manage-extra-section",
+      icon: LayoutPanelTop,
 
     },
     {

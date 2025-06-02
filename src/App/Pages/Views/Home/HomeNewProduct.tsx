@@ -9,14 +9,18 @@ import { TProduct } from "@/Types";
 import { ShoppingCart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import OfferStiker from "@/App/Components/Customs/OfferStiker";
+import { Button } from "@/components/ui/button";
+import { useGetWebInfoQuery } from "@/App/Redux/features/admin/admin.api";
 
 
 const HomeNewProduct = () => {
+      const { data: webInfo } = useGetWebInfoQuery(undefined)
+      const currency = webInfo?.data?.webInfo?.webInfo?.curr;
       const { t } = useTranslation()
       const dispatch = useAppDispatch();
       const carts = useAppSelector(selectCart)
       const { language } = useAppSelector(state => state.language)
-      const { data, isLoading } = useGetAllProductQuery([{ name: "isActive", value: true }, { name: "isDeleted", value: false }])
+      const { data, isLoading } = useGetAllProductQuery([{ name: "isActive", value: true }])
       const handleAddtoCart = (payload: TProduct) => {
             dispatch(addToCart(payload))
             toast.success("Product added in cart.")
@@ -49,10 +53,10 @@ const HomeNewProduct = () => {
                                           {
                                                 product?.isFlashDeals ?
                                                       <div className="flex justify-center gap-1 pt-1">
-                                                            <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {product?.currency}</sup>
-                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {product?.currency}</h3>
+                                                            <sup dir="auto" className="text-brandTextSecondary text-sm line-through">{product.price} {currency}</sup>
+                                                            <h3 dir="auto" className="text-brandSelect font-bold">{product?.offerPrice} {currency}</h3>
                                                       </div> :
-                                                      <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {product?.currency}</h3>
+                                                      <h3 dir="auto" className="text-brandSelect font-bold">{product.price} {currency}</h3>
                                           }
                                     </div>
 
@@ -78,12 +82,14 @@ const HomeNewProduct = () => {
                                                             </button>
                                                       </>
                                                 ) : (
-                                                      <button
+                                                      <Button
+                                                            disabled={!product?.isInStock}
+                                                            variant={"outline"}
                                                             onClick={() => handleAddtoCart(product)}
                                                             className="border w-full px-8 py-2 rounded-full hover:bg-brandSelect hover:text-white transition-colors duration-500 flex items-center gap-2 justify-center"
                                                       >
-                                                            <ShoppingCart /> Add to Cart
-                                                      </button>
+                                                            <ShoppingCart /> {t("Add to Cart")}
+                                                      </Button>
                                                 )
                                           }
                                     </div>

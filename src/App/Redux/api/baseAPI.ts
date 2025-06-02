@@ -17,6 +17,7 @@ const baseQueryAPI = fetchBaseQuery({
   credentials: 'include',
   prepareHeaders(headers, { getState }) {
     const token = (getState() as RootState).auth.token
+
     if (token) {
       headers.set('authorization', token)
     }
@@ -68,7 +69,9 @@ export const baseAPI = createApi({
     'CATEGORY',
     'RIDERS',
     'WEB',
-    'UPDATEBANNER'
+    'UPDATEBANNER',
+    'TOP-BANNER',
+    'EXTRA-SECTION'
   ],
   endpoints: () => ({})
 })

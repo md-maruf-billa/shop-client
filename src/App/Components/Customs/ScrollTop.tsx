@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router";
-const ScrollToTop = () => {
+const ScrollToTop = ({ isRefresh }: { isRefresh?: boolean }) => {
       const { pathname } = useLocation();
 
       useEffect(() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
-      }, [pathname]);
+      }, [pathname, isRefresh]);
 
       return null;
 };
