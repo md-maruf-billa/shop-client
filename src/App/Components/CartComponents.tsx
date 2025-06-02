@@ -47,8 +47,8 @@ const CartComponents = () => {
                   </SheetTrigger>
                   <SheetContent className="overflow-y-scroll w-96">
                         <SheetHeader className="mb-8 mt-3 flex flex-row items-center justify-between">
-                              <SheetTitle>Your Cart's</SheetTitle>
-                              <h2 className="flex items-center gap-2">Total-: <span className="text-brandSelect font-bold text-xl ">{totalPrice} {data?.data?.webInfo?.webInfo?.curr}</span></h2>
+                              <SheetTitle dir="auto">{t("Your Cart's")}</SheetTitle>
+                              <h2 dir="auto" className="flex items-center gap-2">{t("Total")}-: <span className="text-brandSelect font-bold text-xl ">{totalPrice} {data?.data?.webInfo?.webInfo?.curr}</span></h2>
                         </SheetHeader>
                         {
                               carts?.map(cart =>
@@ -61,8 +61,8 @@ const CartComponents = () => {
                                                       <Link onClick={() => setOpenSheet(false)} to={`/product-details/${cart?._id}`} className="font-bold text-brandTextSecondary hover:underline cursor-pointer">{cart?.name?.slice(0, 20)} ..</Link>
 
 
-                                                      <p className="text-xs"><span>Category -</span> <span className="italic text-brandTextPrimary">{cart?.category?.name}</span></p>
-                                                      <h2 className="text-brandTextTertiary text-sm">Price- <span className="text-brandSelect font-semibold text-base">{cart?.isFlashDeals ? cart?.offerPrice : cart?.price} {data?.data?.webInfo?.webInfo?.curr}</span></h2>
+                                                      <p className="text-xs"><span>{t("Categories")} -</span> <span className="italic text-brandTextPrimary">{cart?.category?.name}</span></p>
+                                                      <h2 dir="auto" className="text-brandTextTertiary text-sm">{t("Price")}- <span className="text-brandSelect font-semibold text-base">{cart?.isFlashDeals ? cart?.offerPrice : cart?.price} {data?.data?.webInfo?.webInfo?.curr}</span></h2>
 
                                                       <div className="mt-3">
                                                             <button
@@ -92,7 +92,7 @@ const CartComponents = () => {
                         }
                         <hr className="my-5" />
                         <Link onClick={() => setOpenSheet(false)} to="/check-out">
-                              <button className="w-full flex items-center justify-center gap-2 border cursor-pointer  px-8 py-2 rounded-full bg-brandTextPrimary hover:bg-brandTextPrimary/60 text-white hover:text-brandSecondary  transition-colors duration-500"><FaCartArrowDown />Buy Now <span className="text-brandSelect font-bold">({totalPrice} {data?.data?.webInfo?.webInfo?.curr})</span></button>
+                              <button dir="auto" className="w-full flex items-center justify-center gap-2 border cursor-pointer  px-8 py-2 rounded-full bg-brandTextPrimary hover:bg-brandTextPrimary/60 text-white hover:text-brandSecondary  transition-colors duration-500"><FaCartArrowDown />{t("Buy Now")} <span className="text-brandSelect font-bold">({totalPrice} {data?.data?.webInfo?.webInfo?.curr})</span></button>
                         </Link>
                   </SheetContent>
             </Sheet>

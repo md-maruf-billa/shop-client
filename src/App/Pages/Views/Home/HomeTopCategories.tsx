@@ -25,8 +25,8 @@ const HomeTopCategories = () => {
             <div className="mt-16">
 
                   <div >
-                        <p className="flex items-center gap-2 text-brandSelect text-sm"><img src={bar} alt="" />{t("CATEGORIES")}</p>
-                        <h2 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t("Explore our Top Categories")}</h2>
+                        <p className="flex items-center gap-2 text-brandSelect text-sm uppercase"><img src={bar} alt="" />{t("Categories")}</p>
+                        <h2 className="text-4xl font-semibold text-brandTextPrimary mt-4">{t("Top Categories")}</h2>
                   </div>
 
 
@@ -49,8 +49,8 @@ const HomeTopCategories = () => {
                   </div>
 
                   <div className={`flex justify-end items-center mt-10 ${data?.data?.length < category ? "hidden" : "flex"}`}>
-                        <Button variant={"outline"} className={`${category > data?.data?.length || data?.data?.length == 0 ? "hidden" : "flex"}`} onClick={() => setCategory(category + 7)}>Show More</Button>
-                        <Button variant={"outline"} className={`${category < data?.data?.length || data?.data?.length == 0 ? "hidden" : "flex"}`} onClick={() => setCategory(category - 7)}>Show Less</Button>
+                        <Button variant={"outline"} className={`${category > data?.data?.length || data?.data?.length == 0 ? "hidden" : "flex"}`} onClick={() => setCategory(category + 7)}>{t("View more")}</Button>
+                        <Button variant={"outline"} className={`${category < data?.data?.length || data?.data?.length == 0 ? "hidden" : "flex"}`} onClick={() => setCategory(category - 7)}>{t("View Less")}</Button>
                   </div>
             </div>
       );
